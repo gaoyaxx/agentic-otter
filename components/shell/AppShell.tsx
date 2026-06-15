@@ -5,6 +5,8 @@ import GlobalNav from "./GlobalNav";
 import SideNav from "./SideNav";
 import ContentArea from "./ContentArea";
 import RightPanel from "./RightPanel";
+import GenerateDescriptionsModal from "./GenerateDescriptionsModal";
+import Toast from "./Toast";
 
 /**
  * Three-column application shell.
@@ -28,6 +30,8 @@ export default function AppShell() {
           <ContentArea />
           <RightPanel />
         </div>
+        <GenerateDescriptionsModal />
+        <Toast />
       </div>
     </LayoutProvider>
   );

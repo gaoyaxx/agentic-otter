@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/page-template";
 import BrandMenusPage from "./BrandMenusPage";
 import SalesSummary from "./SalesSummary";
+import OperationHours from "./OperationHours";
 
 /* ----------------------------- mock metrics ----------------------------- */
 
@@ -146,6 +147,8 @@ export default function ContentArea() {
       <div className="h-full w-full">
         {activePage === "brand-menus" ? (
           <BrandMenusPage />
+        ) : activePage === "operation-hours" ? (
+          <OperationHours />
         ) : (
         <PageContainer
           header={

@@ -41,8 +41,12 @@ function PanelSurface({ children }: { children: React.ReactNode }) {
 /* ------------------------------ AI insights ----------------------------- */
 
 function InsightsPanel() {
-  const { closePanel, activePage } = useLayout();
-  const insights = insightsForPage(activePage);
+  const { closePanel, activePage, openGenerateModal, descriptionsApplied } =
+    useLayout();
+  const insights = insightsForPage(activePage).filter(
+    (ins) =>
+      !(descriptionsApplied && ins.action === "Generate all descriptions"),
+  );
   const scrollRef = useAutoHideScrollbar();
   return (
     <PanelSurface>
@@ -108,6 +112,11 @@ function InsightsPanel() {
                           variant="tertiary"
                           size="sm"
                           iconTrailing={ArrowRight}
+                          onClick={
+                            ins.action === "Generate all descriptions"
+                              ? openGenerateModal
+                              : undefined
+                          }
                         >
                           {ins.action}
                         </Button>

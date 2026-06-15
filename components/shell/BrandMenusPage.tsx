@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import {
   ChevronDown,
   CircleCheck,
@@ -245,9 +245,9 @@ function MenusTable() {
 /* -------------------------------- page --------------------------------- */
 
 export default function BrandMenusPage() {
-  const { openPanel, closePanel, rightPanel } = useLayout();
+  const { openPanel, closePanel, rightPanel, menuTab: tab, setMenuTab: setTab } =
+    useLayout();
   const insightsOpen = rightPanel === "insights";
-  const [tab, setTab] = useState<(typeof MENU_TABS)[number]>("Menus");
 
   return (
     <PageContainer

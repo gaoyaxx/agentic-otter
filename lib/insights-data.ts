@@ -343,6 +343,34 @@ const BY_PAGE: Record<string, Insight[]> = {
     },
   ],
 
+  /* ---------------------------- Locations ---------------------------- */
+  "operation-hours": [
+    {
+      title: "Christmas is next week — set special hours?",
+      body: "Dec 25 falls next Thursday. None of your locations have special hours configured for it — set holiday hours now so customers and delivery apps show the right times.",
+      action: "Set special hours",
+      severity: "opportunity",
+    },
+    {
+      title: "All locations closed on weekends",
+      body: "Every location is closed Saturday and Sunday — opening even a half-day could capture weekend demand competitors are serving.",
+      action: "Review weekend hours",
+      severity: "opportunity",
+    },
+    {
+      title: "Tuesday set to 'All day' everywhere",
+      body: "Every location lists 'All day' for Tuesday instead of specific hours — likely a misconfiguration worth verifying.",
+      action: "Check Tuesday hours",
+      severity: "risk",
+    },
+    {
+      title: "Downtown Delights has a midday gap",
+      body: "It's the only location with a split shift (closed 11:00AM–4:00PM Mon–Fri), which may be costing lunch orders.",
+      action: "View location",
+      severity: "opportunity",
+    },
+  ],
+
   /* ------------------------------ Brand ------------------------------ */
   "brand-profile": [
     {
@@ -407,8 +435,11 @@ export function insightsForPage(pageId: string): Insight[] {
  * the panel yet.
  */
 const INSIGHTS_MODULES = new Set(["reports", "menus"]);
+/** Individual pages (outside the insight modules) that also expose insights. */
+const INSIGHTS_PAGES = new Set(["operation-hours"]);
 
 export function pageHasInsights(pageId: string): boolean {
+  if (INSIGHTS_PAGES.has(pageId)) return true;
   const mod = moduleIdFor(pageId);
   return mod != null && INSIGHTS_MODULES.has(mod);
 }

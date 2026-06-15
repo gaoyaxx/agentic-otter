@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -43,6 +44,22 @@ interface LayoutState {
   /** Derived pixel widths for the current state. */
   navWidth: number;
   panelWidth: number;
+
+  /** Brand menus active tab (lifted so flows can switch it). */
+  menuTab: string;
+  setMenuTab: (t: string) => void;
+
+  /* Generate-descriptions flow */
+  generateModalOpen: boolean;
+  openGenerateModal: () => void;
+  closeGenerateModal: () => void;
+  /** True once descriptions have been applied (hides the insight card). */
+  descriptionsApplied: boolean;
+  /** Apply: close modal, go to Brand menus → Menu items, toast, hide card. */
+  applyDescriptions: () => void;
+
+  /** Transient toast message (auto-dismisses). */
+  toast: string | null;
 }
 
 const LayoutContext = createContext<LayoutState | null>(null);
@@ -53,6 +70,28 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
   const [navHover, setNavHover] = useState(false);
   const [rightPanel, setRightPanel] = useState<RightPanelKind>("insights");
   const [activePage, setActivePage] = useState("sales");
+  const [menuTab, setMenuTab] = useState("Menus");
+  const [generateModalOpen, setGenerateModalOpen] = useState(false);
+  const [descriptionsApplied, setDescriptionsApplied] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showToast = useCallback((msg: string) => {
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    setToast(msg);
+    toastTimer.current = setTimeout(() => setToast(null), 4000);
+  }, []);
+
+  const openGenerateModal = useCallback(() => setGenerateModalOpen(true), []);
+  const closeGenerateModal = useCallback(() => setGenerateModalOpen(false), []);
+
+  const applyDescriptions = useCallback(() => {
+    setDescriptionsApplied(true);
+    setGenerateModalOpen(false);
+    setMenuTab("Menu items");
+    setActivePage("brand-menus");
+    showToast("Successfully updated descriptions for 18 items.");
+  }, [showToast]);
 
   const toggleNav = useCallback(() => setNavExpanded((v) => !v), []);
 
@@ -95,6 +134,14 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
       closePanel,
       navWidth,
       panelWidth,
+      menuTab,
+      setMenuTab,
+      generateModalOpen,
+      openGenerateModal,
+      closeGenerateModal,
+      descriptionsApplied,
+      applyDescriptions,
+      toast,
     }),
     [
       persona,
@@ -107,6 +154,13 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
       closePanel,
       navWidth,
       panelWidth,
+      menuTab,
+      generateModalOpen,
+      openGenerateModal,
+      closeGenerateModal,
+      descriptionsApplied,
+      applyDescriptions,
+      toast,
     ],
   );
 
