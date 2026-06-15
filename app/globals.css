@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+  background-color: #f5f5f5; /* Static/Background/Weak */
+  color: #141414; /* Static/Text/Strong */
+  font-family: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  /* ss01 = single-story 'a' (Otter house style); auto optical sizing
+     approximates Inter Display at large sizes. */
+  font-feature-settings: "ss01";
+  font-optical-sizing: auto;
+  /* Grayscale smoothing — matches Figma's rendering; without this, subpixel
+     rendering makes text look heavier than the design. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Tabular, lining figures for metrics/numbers (matches Figma tnum/lnum). */
+.tabular-nums {
+  font-feature-settings: "ss01", "lnum", "tnum";
+}
+
+/* Focus/Outside — 2px inner white ring + 4px outer dark ring. */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #141414;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Auto-hide scrollbar — thumb is transparent until the element is actively
+   scrolling (`.is-scrolling` toggled by JS) or hovered. */
+.scrollbar-autohide {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.scrollbar-autohide::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.scrollbar-autohide::-webkit-scrollbar-thumb {
+  background: transparent;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 9999px;
+}
+.scrollbar-autohide.is-scrolling,
+.scrollbar-autohide:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.28) transparent;
+}
+.scrollbar-autohide.is-scrolling::-webkit-scrollbar-thumb,
+.scrollbar-autohide:hover::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.28);
+  background-clip: padding-box;
+}
