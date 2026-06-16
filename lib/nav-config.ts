@@ -28,6 +28,8 @@ export interface NavItem {
   standalone?: boolean;
   children?: NavChild[];
   personas?: Persona[];
+  /** Render a section divider line above this item. */
+  dividerBefore?: boolean;
 }
 
 /** Brands owned by the signed-in brand owner (top-of-nav selector). */
@@ -59,6 +61,7 @@ export const NAV_ITEMS: NavItem[] = [
     id: "reports",
     label: "Reports",
     icon: BarChart3,
+    dividerBefore: true,
     children: [
       { id: "live-sales", label: "Live sales" },
       { id: "sales", label: "Sales" },
@@ -77,6 +80,7 @@ export const NAV_ITEMS: NavItem[] = [
     id: "menus",
     label: "Menus",
     icon: BookOpen,
+    dividerBefore: true,
     children: [
       { id: "brand-menus", label: "Brand menus" },
       { id: "sku-library", label: "SKU library" },
@@ -104,6 +108,7 @@ export const NAV_ITEMS: NavItem[] = [
     id: "locations",
     label: "Locations",
     icon: MapPin,
+    dividerBefore: true,
     children: [
       { id: "overview", label: "Overview" },
       { id: "stations", label: "Stations" },
@@ -143,7 +148,13 @@ export const NAV_ITEMS: NavItem[] = [
       { id: "timecards", label: "Timecards" },
     ],
   },
-  { id: "settings", label: "Settings", icon: Settings, standalone: true },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    standalone: true,
+    dividerBefore: true,
+  },
 ];
 
 export function navForPersona(persona: Persona): NavItem[] {

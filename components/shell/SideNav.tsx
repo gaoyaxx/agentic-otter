@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useLayout, NAV_WIDTH_EXPANDED } from "@/lib/layout-context";
 import { navForPersona, type NavItem } from "@/lib/nav-config";
@@ -112,7 +112,14 @@ function NavContent({ expanded }: { expanded: boolean }) {
         ref={scrollRef}
         className="scrollbar-autohide flex-1 space-y-0.5 overflow-y-auto px-3 pb-3"
       >
-        {items.map(renderItem)}
+        {items.map((item) => (
+          <Fragment key={item.id}>
+            {item.dividerBefore && (
+              <div className="my-2 border-t border-border-standard" />
+            )}
+            {renderItem(item)}
+          </Fragment>
+        ))}
       </nav>
     </div>
   );
