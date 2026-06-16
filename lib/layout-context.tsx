@@ -41,6 +41,11 @@ interface LayoutState {
   openPanel: (kind: Exclude<RightPanelKind, "none">) => void;
   closePanel: () => void;
 
+  /** Otter assistant topic — null = default landing, else a guided flow. */
+  otterTopic: string | null;
+  /** Open Otter assistant straight into the Edit hours conversation. */
+  openOtterEditHours: () => void;
+
   /** Derived pixel widths for the current state. */
   navWidth: number;
   panelWidth: number;
@@ -95,11 +100,20 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
 
   const toggleNav = useCallback(() => setNavExpanded((v) => !v), []);
 
+  const [otterTopic, setOtterTopic] = useState<string | null>(null);
+
   const openPanel = useCallback((kind: Exclude<RightPanelKind, "none">) => {
     // Otter replaces any other panel; opening any panel auto-collapses the
     // rail to give content room (user can re-expand via the top-nav button).
     setRightPanel(kind);
     setNavExpanded(false);
+    if (kind === "otter") setOtterTopic(null); // default landing
+  }, []);
+
+  const openOtterEditHours = useCallback(() => {
+    setRightPanel("otter");
+    setNavExpanded(false);
+    setOtterTopic("edit-hours");
   }, []);
 
   const closePanel = useCallback(() => setRightPanel("none"), []);
@@ -132,6 +146,8 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
       toggleNav,
       openPanel,
       closePanel,
+      otterTopic,
+      openOtterEditHours,
       navWidth,
       panelWidth,
       menuTab,
@@ -152,6 +168,8 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
       toggleNav,
       openPanel,
       closePanel,
+      otterTopic,
+      openOtterEditHours,
       navWidth,
       panelWidth,
       menuTab,

@@ -38,8 +38,50 @@ function SuggestionCard({ s }: { s: Suggestion }) {
  * Otter Assistant landing — matches Figma node 1:41572.
  * Light, container-style surface with greeting, suggestion cards, and input.
  */
+const EDIT_HOURS_PROMPTS = [
+  "Set [location] operation hours to Monday–Friday, 11am–10pm",
+  "Set [brand] happy hour menu from 4–6pm weekdays for all locations",
+  "Stop Ubereats online orders 30 minutes before closing for [location]",
+  "Apply Saturday 10am–11pm hours to all [brand] California locations",
+];
+
+function EditHoursIntro() {
+  return (
+    <div className="py-6 text-body-md leading-relaxed text-content-secondary">
+      <p className="font-semibold text-content-strong">Edit hours</p>
+      <p className="mt-3">Here&apos;s what you can configure with my help:</p>
+      <p className="mt-2">
+        <span className="font-semibold text-content-strong">Operation hours</span>{" "}
+        — When your restaurant is open. This is your master schedule.
+      </p>
+      <p className="mt-2">
+        <span className="font-semibold text-content-strong">Menu hours</span> —
+        Which menus are available and when. Breakfast, lunch, happy hour — each on
+        its own schedule. If needed, you can customize hours for specific platforms
+        like DoorDash or UberEats.
+      </p>
+      <p className="mt-3">
+        If you manage multiple locations or brands, I&apos;ll make sure you&apos;re
+        always clear on what&apos;s being changed and where before anything is
+        applied.
+      </p>
+      <p className="mt-3">Select one to get started or describe your requirement:</p>
+      <ul className="mt-2 list-disc space-y-2 pl-5">
+        {EDIT_HOURS_PROMPTS.map((p) => (
+          <li key={p}>
+            <button className="focus-ring rounded text-left font-semibold text-content-strong underline decoration-from-font underline-offset-2 hover:text-content-secondary">
+              {p}
+            </button>
+          </li>
+        ))}
+      </ul>
+      <img src={asset("/otter-ai.png")} alt="" className="mt-5 h-8 w-8" />
+    </div>
+  );
+}
+
 export default function OtterAssistant() {
-  const { closePanel } = useLayout();
+  const { closePanel, otterTopic } = useLayout();
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-page bg-surface shadow-elevation-low">
@@ -80,19 +122,24 @@ export default function OtterAssistant() {
 
         {/* Body */}
         <div className="relative flex-1 overflow-y-auto px-4">
-          <div className="flex flex-col items-center pt-12">
-          <img src={asset("/otter-ai.png")} alt="" className="h-12 w-12" />
-          <h2 className="mt-5 max-w-[280px] text-center font-serif text-[26px] leading-[32px] text-content-strong">
-            Good morning, Olivia. How can I help you today?
-          </h2>
+          {otterTopic === "edit-hours" ? (
+            <EditHoursIntro />
+          ) : (
+            <>
+              <div className="flex flex-col items-center pt-12">
+                <img src={asset("/otter-ai.png")} alt="" className="h-12 w-12" />
+                <h2 className="mt-5 max-w-[280px] text-center font-serif text-[26px] leading-[32px] text-content-strong">
+                  Good morning, Olivia. How can I help you today?
+                </h2>
+              </div>
+              <div className="mt-7 flex flex-col gap-3">
+                {SUGGESTIONS.map((s) => (
+                  <SuggestionCard key={s.label} s={s} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
-
-        <div className="mt-7 flex flex-col gap-3">
-          {SUGGESTIONS.map((s) => (
-            <SuggestionCard key={s.label} s={s} />
-          ))}
-        </div>
-      </div>
 
       {/* Input */}
       <div className="relative flex-shrink-0 px-4 pb-4 pt-2">

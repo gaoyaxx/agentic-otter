@@ -133,7 +133,7 @@ function HoursTable() {
 /* -------------------------------- page --------------------------------- */
 
 export default function OperationHours() {
-  const { openPanel, closePanel, rightPanel } = useLayout();
+  const { openPanel, closePanel, rightPanel, openOtterEditHours } = useLayout();
   const insightsOpen = rightPanel === "insights";
   const [active, setActive] = useState("Regular hours");
 
@@ -148,7 +148,10 @@ export default function OperationHours() {
               <Button variant="tertiary" size="sm" iconTrailing={ExternalLink}>
                 View menu hours
               </Button>
-              <button className="focus-ring flex h-8 items-center gap-1.5 rounded-control bg-secondary px-3 text-body-md font-medium text-white hover:bg-secondary-hover">
+              <button
+                onClick={openOtterEditHours}
+                className="focus-ring flex h-8 items-center gap-1.5 rounded-control bg-secondary px-3 text-body-md font-medium text-white hover:bg-secondary-hover"
+              >
                 <img
                   src={asset("/otter-ai.png")}
                   alt=""
