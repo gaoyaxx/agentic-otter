@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Persona } from "./nav-config";
+import type { Persona, Version } from "./nav-config";
 import { pageHasInsights } from "./insights-data";
 
 export type RightPanelKind = "none" | "insights" | "otter" | "setup";
@@ -24,6 +24,10 @@ export const PANEL_WIDTH_NAV_COLLAPSED = 450;
 interface LayoutState {
   persona: Persona;
   setPersona: (p: Persona) => void;
+
+  /** A/B prototype version. */
+  version: Version;
+  switchVersion: (v: Version) => void;
 
   /** Persistent rail state (pushes layout). false = icon-only 64px. */
   navExpanded: boolean;
@@ -71,6 +75,7 @@ const LayoutContext = createContext<LayoutState | null>(null);
 
 export function LayoutProvider({ children }: { children: ReactNode }) {
   const [persona, setPersona] = useState<Persona>("enterprise");
+  const [version, setVersion] = useState<Version>("A");
   const [navExpanded, setNavExpanded] = useState(true);
   const [navHover, setNavHover] = useState(false);
   const [rightPanel, setRightPanel] = useState<RightPanelKind>("insights");
@@ -118,6 +123,11 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
 
   const closePanel = useCallback(() => setRightPanel("none"), []);
 
+  const switchVersion = useCallback((v: Version) => {
+    setVersion(v);
+    setActivePage("sales"); // valid in both versions
+  }, []);
+
   // On page change: if the page has insights and nothing is open, default to
   // the insights panel. Keep Otter assistant open if it already is. On a page
   // without insights, close the insights panel (Otter/setup stay).
@@ -137,6 +147,8 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
     () => ({
       persona,
       setPersona,
+      version,
+      switchVersion,
       navExpanded,
       navHover,
       setNavHover,
@@ -161,6 +173,8 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
     }),
     [
       persona,
+      version,
+      switchVersion,
       navExpanded,
       navHover,
       rightPanel,

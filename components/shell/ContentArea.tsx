@@ -122,10 +122,10 @@ function ViewFullReport() {
 /* ------------------------------- content -------------------------------- */
 
 export default function ContentArea() {
-  const { activePage, openPanel, closePanel, rightPanel } = useLayout();
+  const { activePage, openPanel, closePanel, rightPanel, version } = useLayout();
   const insightsOpen = rightPanel === "insights";
   const hasInsights = pageHasInsights(activePage);
-  const { parent, title } = resolvePage(activePage);
+  const { parent, title } = resolvePage(activePage, version);
   const isHome = activePage === "home";
   const isOtterShops = activePage === "otter-shops";
   const isLiveSales = activePage === "live-sales";
@@ -176,7 +176,7 @@ export default function ContentArea() {
                       Customize
                     </Button>
                   );
-                if (isReports)
+                if (isReports || activePage === "sales")
                   return (
                     <>
                       <Button variant="tertiary" size="sm" icon={Settings2}>

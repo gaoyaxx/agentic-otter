@@ -10,6 +10,13 @@ import {
   Radio,
   Users,
   Settings,
+  Activity,
+  RotateCcw,
+  Megaphone,
+  Scale,
+  Star,
+  BellRing,
+  BadgeCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -157,6 +164,26 @@ export const NAV_ITEMS: NavItem[] = [
   },
 ];
 
+export type Version = "A" | "B";
+
+/** Version B — product-line-driven flat nav. */
+export const NAV_ITEMS_B: NavItem[] = [
+  { id: "home", label: "Home", icon: Home, standalone: true },
+  { id: "otter-shops", label: "Otter Shop", icon: Store, standalone: true },
+  { id: "live-sales", label: "Live Sales", icon: Activity, standalone: true },
+  { id: "sales", label: "Sales", icon: BarChart3, standalone: true },
+  { id: "revenue-recapture", label: "Revenue Recapture", icon: RotateCcw, standalone: true },
+  { id: "marketing-automation", label: "Marketing automation", icon: Megaphone, standalone: true },
+  { id: "financial-reconciliation", label: "Financial Reconciliation", icon: Scale, standalone: true },
+  { id: "reputation-management", label: "Reputation management", icon: Star, standalone: true },
+  { id: "live-alerts", label: "Live alerts", icon: BellRing, standalone: true },
+  { id: "verify", label: "Verify", icon: BadgeCheck, standalone: true },
+];
+
+export function navForVersion(version: Version, persona: Persona): NavItem[] {
+  return version === "B" ? NAV_ITEMS_B : navForPersona(persona);
+}
+
 export function navForPersona(persona: Persona): NavItem[] {
   const visible = (p?: Persona[]) => !p || p.includes(persona);
   return NAV_ITEMS.filter((item) => visible(item.personas)).map((item) => ({
@@ -165,11 +192,15 @@ export function navForPersona(persona: Persona): NavItem[] {
   }));
 }
 
-export function resolvePage(pageId: string): {
+export function resolvePage(
+  pageId: string,
+  version: Version = "A",
+): {
   parent?: string;
   title: string;
 } {
-  for (const item of NAV_ITEMS) {
+  const items = version === "B" ? NAV_ITEMS_B : NAV_ITEMS;
+  for (const item of items) {
     if (item.id === pageId) return { title: item.label };
     const child = item.children?.find((c) => c.id === pageId);
     if (child) return { parent: item.label, title: child.label };
