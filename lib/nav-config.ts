@@ -50,9 +50,7 @@ export interface Brand {
 
 export const BRANDS: Brand[] = [
   { id: "burger-king", name: "Burger King", emoji: "🍔", logo: "/brand-burger-king.png" },
-  { id: "pasta-glory", name: "Pasta Glory", emoji: "🍝" },
-  { id: "brooklyn-calzones", name: "Brooklyn Calzones", emoji: "🥟" },
-  { id: "birria-hands", name: "Birria Hands", emoji: "🌮" },
+  { id: "popeyes", name: "Popeyes", emoji: "🍗" },
 ];
 
 /**
