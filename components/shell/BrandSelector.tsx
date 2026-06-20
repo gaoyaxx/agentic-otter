@@ -20,8 +20,8 @@ export default function BrandSelector({ expanded }: { expanded: boolean }) {
   if (owner === "location") {
     return (
       <div
-        className={`flex h-11 w-full items-center gap-2 rounded-control px-2 text-content-secondary ${
-          expanded ? "" : "justify-center px-0"
+        className={`flex h-11 w-full items-center gap-2 rounded-control border border-border-standard bg-surface px-2 text-content-secondary ${
+          expanded ? "" : "justify-center border-0 px-0"
         }`}
         title={!expanded ? "[BIGGBY] Amy Harris" : undefined}
       >
@@ -64,8 +64,13 @@ export default function BrandSelector({ expanded }: { expanded: boolean }) {
         )}
         {expanded && (
           <>
-            <span className="flex-1 truncate text-left text-body-md font-semibold">
-              {active.name}
+            <span className="flex min-w-0 flex-1 flex-col text-left">
+              <span className="truncate text-body-md font-semibold text-content-strong">
+                {active.name}
+              </span>
+              <span className="truncate text-body-sm font-normal text-content-weak">
+                10 Franchisees, 130 locations
+              </span>
             </span>
             <ChevronDown className="h-4 w-4 flex-shrink-0 text-content-weak" />
           </>

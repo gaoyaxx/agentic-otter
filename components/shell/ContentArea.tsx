@@ -127,7 +127,7 @@ export default function ContentArea() {
     useLayout();
   const insightsOpen = rightPanel === "insights";
   const hasInsights = pageHasInsights(activePage);
-  const { parent, title } = resolvePage(activePage, bundle);
+  const { parent, title } = resolvePage(activePage, bundle, owner);
   const isHome = activePage === "home";
   const isOtterShops = activePage === "otter-shops";
   const isLiveSales = activePage === "live-sales";

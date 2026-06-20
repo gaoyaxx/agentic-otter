@@ -167,30 +167,67 @@ export const NAV_ITEMS: NavItem[] = [
 export type Owner = "brand" | "location";
 export type Bundle = "enterprise" | "pos" | "middleware";
 
-/** Product-line-driven flat nav (Enterprise bundle). */
-export const NAV_ITEMS_B: NavItem[] = [
-  { id: "home", label: "Home", icon: Home, standalone: true },
-  { id: "otter-shops", label: "Otter Shop", icon: Store, standalone: true },
-  { id: "live-sales", label: "Live Sales", icon: Activity, standalone: true },
-  { id: "sales", label: "Sales", icon: BarChart3, standalone: true },
-  { id: "revenue-recapture", label: "Revenue Recapture", icon: RotateCcw, standalone: true },
-  { id: "marketing-automation", label: "Marketing automation", icon: Megaphone, standalone: true },
-  { id: "financial-reconciliation", label: "Financial Reconciliation", icon: Scale, standalone: true },
-  { id: "reputation-management", label: "Reputation management", icon: Star, standalone: true },
-  { id: "live-alerts", label: "Live alerts", icon: BellRing, standalone: true },
-  { id: "verify", label: "Verify", icon: BadgeCheck, standalone: true },
-];
+/**
+ * Product-line-driven nav (Enterprise / Middleware bundles), grouped into
+ * sections separated by divider lines:
+ *   1) Home, Otter Shop
+ *   2) Live Sales, Sales
+ *   3) Revenue Recapture … Availability, Verify
+ *   [Middleware only] Orders, Menus
+ *   4) Franchises (brand owner only), Locations, Staff
+ */
+function enterpriseNav(owner: Owner, withOrdersMenus: boolean): NavItem[] {
+  const menus = NAV_ITEMS.find((i) => i.id === "menus")!;
 
-/** Nav per bundle: POS = workflow-driven (A); Enterprise = product-line (B);
- *  Middleware = Enterprise plus Orders and Menus. */
-export function navForBundle(bundle: Bundle): NavItem[] {
-  if (bundle === "pos") return NAV_ITEMS;
-  if (bundle === "middleware") {
-    const orders = NAV_ITEMS.find((i) => i.id === "orders")!;
-    const menus = NAV_ITEMS.find((i) => i.id === "menus")!;
-    return [...NAV_ITEMS_B, { ...orders, dividerBefore: true }, menus];
+  const ordersMenus: NavItem[] = withOrdersMenus
+    ? [
+        { id: "orders", label: "Orders", icon: ShoppingBag, standalone: true, dividerBefore: true },
+        { ...menus, dividerBefore: false },
+      ]
+    : [];
+
+  const group4: NavItem[] = [
+    ...(owner === "brand"
+      ? [{ id: "franchises", label: "Franchisees", icon: UsersRound, standalone: true } as NavItem]
+      : []),
+    { id: "locations", label: "Locations", icon: MapPin, standalone: true },
+    {
+      id: "staff",
+      label: "Staff",
+      icon: Users,
+      children: [
+        { id: "users", label: "Users" },
+        { id: "roles", label: "Roles" },
+      ],
+    },
+  ];
+  group4[0] = { ...group4[0], dividerBefore: true };
+
+  return [
+    { id: "home", label: "Home", icon: Home, standalone: true },
+    { id: "otter-shops", label: "Otter Shop", icon: Store, standalone: true },
+    { id: "live-sales", label: "Live Sales", icon: Activity, standalone: true, dividerBefore: true },
+    { id: "sales", label: "Sales", icon: BarChart3, standalone: true },
+    { id: "revenue-recapture", label: "Revenue Recapture", icon: RotateCcw, standalone: true, dividerBefore: true },
+    { id: "marketing-automation", label: "Marketing automation", icon: Megaphone, standalone: true },
+    { id: "financial-reconciliation", label: "Financial Reconciliation", icon: Scale, standalone: true },
+    { id: "reputation-management", label: "Reputation management", icon: Star, standalone: true },
+    { id: "availability", label: "Availability", icon: BellRing, standalone: true },
+    { id: "verify", label: "Verify", icon: BadgeCheck, standalone: true },
+    ...ordersMenus,
+    ...group4,
+  ];
+}
+
+/** Nav per bundle + owner. POS = workflow-driven (location owner drops Brand);
+ *  Enterprise / Middleware = grouped product-line nav. */
+export function navForBundle(bundle: Bundle, owner: Owner = "brand"): NavItem[] {
+  if (bundle === "pos") {
+    return owner === "location"
+      ? NAV_ITEMS.filter((i) => i.id !== "brand")
+      : NAV_ITEMS;
   }
-  return NAV_ITEMS_B; // enterprise
+  return enterpriseNav(owner, bundle === "middleware");
 }
 
 export function navForPersona(persona: Persona): NavItem[] {
@@ -204,11 +241,12 @@ export function navForPersona(persona: Persona): NavItem[] {
 export function resolvePage(
   pageId: string,
   bundle: Bundle = "enterprise",
+  owner: Owner = "brand",
 ): {
   parent?: string;
   title: string;
 } {
-  const items = navForBundle(bundle);
+  const items = navForBundle(bundle, owner);
   for (const item of items) {
     if (item.id === pageId) return { title: item.label };
     const child = item.children?.find((c) => c.id === pageId);

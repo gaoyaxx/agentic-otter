@@ -8,9 +8,9 @@ import { useAutoHideScrollbar } from "@/components/ui/page-template";
 import BrandSelector from "./BrandSelector";
 
 function NavContent({ expanded }: { expanded: boolean }) {
-  const { bundle, activePage, setActivePage } = useLayout();
+  const { bundle, owner, activePage, setActivePage } = useLayout();
   const scrollRef = useAutoHideScrollbar<HTMLElement>();
-  const items = navForBundle(bundle);
+  const items = navForBundle(bundle, owner);
 
   const initiallyOpen = items
     .filter((i) => i.children?.some((c) => c.id === activePage))
