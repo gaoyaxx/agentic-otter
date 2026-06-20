@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Persona, Version } from "./nav-config";
+import type { Persona, Owner, Bundle } from "./nav-config";
 import { pageHasInsights } from "./insights-data";
 
 export type RightPanelKind = "none" | "insights" | "otter" | "setup";
@@ -25,9 +25,11 @@ interface LayoutState {
   persona: Persona;
   setPersona: (p: Persona) => void;
 
-  /** A/B prototype version. */
-  version: Version;
-  switchVersion: (v: Version) => void;
+  /** Persona + bundle controls (prototype options). */
+  owner: Owner;
+  setOwner: (o: Owner) => void;
+  bundle: Bundle;
+  setBundle: (b: Bundle) => void;
 
   /** Persistent rail state (pushes layout). false = icon-only 64px. */
   navExpanded: boolean;
@@ -75,7 +77,8 @@ const LayoutContext = createContext<LayoutState | null>(null);
 
 export function LayoutProvider({ children }: { children: ReactNode }) {
   const [persona, setPersona] = useState<Persona>("enterprise");
-  const [version, setVersion] = useState<Version>("A");
+  const [owner, setOwner] = useState<Owner>("brand");
+  const [bundle, setBundleState] = useState<Bundle>("enterprise");
   const [navExpanded, setNavExpanded] = useState(true);
   const [navHover, setNavHover] = useState(false);
   const [rightPanel, setRightPanel] = useState<RightPanelKind>("insights");
@@ -123,9 +126,9 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
 
   const closePanel = useCallback(() => setRightPanel("none"), []);
 
-  const switchVersion = useCallback((v: Version) => {
-    setVersion(v);
-    setActivePage("sales"); // valid in both versions
+  const setBundle = useCallback((b: Bundle) => {
+    setBundleState(b);
+    setActivePage("sales"); // valid in every bundle
   }, []);
 
   // On page change: if the page has insights and nothing is open, default to
@@ -147,8 +150,10 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
     () => ({
       persona,
       setPersona,
-      version,
-      switchVersion,
+      owner,
+      setOwner,
+      bundle,
+      setBundle,
       navExpanded,
       navHover,
       setNavHover,
@@ -173,8 +178,10 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
     }),
     [
       persona,
-      version,
-      switchVersion,
+      owner,
+      setOwner,
+      bundle,
+      setBundle,
       navExpanded,
       navHover,
       rightPanel,

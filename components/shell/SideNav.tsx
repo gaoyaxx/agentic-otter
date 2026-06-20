@@ -3,14 +3,14 @@
 import { Fragment, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useLayout, NAV_WIDTH_EXPANDED } from "@/lib/layout-context";
-import { navForVersion, type NavItem } from "@/lib/nav-config";
+import { navForBundle, type NavItem } from "@/lib/nav-config";
 import { useAutoHideScrollbar } from "@/components/ui/page-template";
 import BrandSelector from "./BrandSelector";
 
 function NavContent({ expanded }: { expanded: boolean }) {
-  const { persona, version, activePage, setActivePage } = useLayout();
+  const { bundle, activePage, setActivePage } = useLayout();
   const scrollRef = useAutoHideScrollbar<HTMLElement>();
-  const items = navForVersion(version, persona);
+  const items = navForBundle(bundle);
 
   const initiallyOpen = items
     .filter((i) => i.children?.some((c) => c.id === activePage))

@@ -164,9 +164,10 @@ export const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-export type Version = "A" | "B";
+export type Owner = "brand" | "location";
+export type Bundle = "enterprise" | "pos" | "middleware";
 
-/** Version B — product-line-driven flat nav. */
+/** Product-line-driven flat nav (Enterprise bundle). */
 export const NAV_ITEMS_B: NavItem[] = [
   { id: "home", label: "Home", icon: Home, standalone: true },
   { id: "otter-shops", label: "Otter Shop", icon: Store, standalone: true },
@@ -180,8 +181,16 @@ export const NAV_ITEMS_B: NavItem[] = [
   { id: "verify", label: "Verify", icon: BadgeCheck, standalone: true },
 ];
 
-export function navForVersion(version: Version, persona: Persona): NavItem[] {
-  return version === "B" ? NAV_ITEMS_B : navForPersona(persona);
+/** Nav per bundle: POS = workflow-driven (A); Enterprise = product-line (B);
+ *  Middleware = Enterprise plus Orders and Menus. */
+export function navForBundle(bundle: Bundle): NavItem[] {
+  if (bundle === "pos") return NAV_ITEMS;
+  if (bundle === "middleware") {
+    const orders = NAV_ITEMS.find((i) => i.id === "orders")!;
+    const menus = NAV_ITEMS.find((i) => i.id === "menus")!;
+    return [...NAV_ITEMS_B, { ...orders, dividerBefore: true }, menus];
+  }
+  return NAV_ITEMS_B; // enterprise
 }
 
 export function navForPersona(persona: Persona): NavItem[] {
@@ -194,12 +203,12 @@ export function navForPersona(persona: Persona): NavItem[] {
 
 export function resolvePage(
   pageId: string,
-  version: Version = "A",
+  bundle: Bundle = "enterprise",
 ): {
   parent?: string;
   title: string;
 } {
-  const items = version === "B" ? NAV_ITEMS_B : NAV_ITEMS;
+  const items = navForBundle(bundle);
   for (const item of items) {
     if (item.id === pageId) return { title: item.label };
     const child = item.children?.find((c) => c.id === pageId);

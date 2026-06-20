@@ -25,6 +25,7 @@ import {
   Maximize2,
 } from "lucide-react";
 import { FilterPill } from "./ContentArea";
+import { useLayout } from "@/lib/layout-context";
 
 /* ------------------------------- data ---------------------------------- */
 
@@ -288,6 +289,7 @@ function BreakdownsTable() {
 /* -------------------------------- view --------------------------------- */
 
 export default function SalesSummary() {
+  const { owner } = useLayout();
   const [metric, setMetric] = useState("net");
   const [range, setRange] = useState("7D");
 
@@ -318,6 +320,7 @@ export default function SalesSummary() {
           <X className="h-3.5 w-3.5" />
         </button>
         <FilterPill label="Locations" />
+        {owner === "location" && <FilterPill label="Brands" />}
         <FilterPill label="Channels" />
         <FilterPill label="+1 more" />
       </div>

@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useLayout } from "@/lib/layout-context";
 import { resolvePage } from "@/lib/nav-config";
 import { pageHasInsights } from "@/lib/insights-data";
+import { withBrands } from "@/lib/filters";
 import Button from "@/components/ui/Button";
 
 /** Report-type tabs per Reports page. Pages not listed show no tabs. */
@@ -122,10 +123,11 @@ function ViewFullReport() {
 /* ------------------------------- content -------------------------------- */
 
 export default function ContentArea() {
-  const { activePage, openPanel, closePanel, rightPanel, version } = useLayout();
+  const { activePage, openPanel, closePanel, rightPanel, bundle, owner } =
+    useLayout();
   const insightsOpen = rightPanel === "insights";
   const hasInsights = pageHasInsights(activePage);
-  const { parent, title } = resolvePage(activePage, version);
+  const { parent, title } = resolvePage(activePage, bundle);
   const isHome = activePage === "home";
   const isOtterShops = activePage === "otter-shops";
   const isLiveSales = activePage === "live-sales";
@@ -237,11 +239,12 @@ export default function ContentArea() {
           ) : isLiveSales ? (
             <>
               <div className="flex flex-wrap items-center gap-2">
-                {["Locations", "Channels", "Filter", "Filter", "+1 more"].map(
-                  (f, i) => (
-                    <FilterPill key={`${f}-${i}`} label={f} />
-                  ),
-                )}
+                {withBrands(
+                  ["Locations", "Channels", "Filter", "Filter", "+1 more"],
+                  owner === "location",
+                ).map((f, i) => (
+                  <FilterPill key={`${f}-${i}`} label={f} />
+                ))}
               </div>
               <div className="flex h-64 items-center justify-center rounded-card border border-dashed border-border-secondary text-body-md text-content-weak">
                 Live sales content placeholder
@@ -258,11 +261,12 @@ export default function ContentArea() {
             <>
               {/* Filters */}
               <div className="flex flex-wrap items-center gap-2">
-                {["Last 7 days", "Locations", "Channels", "Filter", "Filter", "+1 more"].map(
-                  (f, i) => (
-                    <FilterPill key={`${f}-${i}`} label={f} />
-                  ),
-                )}
+                {withBrands(
+                  ["Last 7 days", "Locations", "Channels", "Filter", "Filter", "+1 more"],
+                  owner === "location",
+                ).map((f, i) => (
+                  <FilterPill key={`${f}-${i}`} label={f} />
+                ))}
               </div>
 
               <Section

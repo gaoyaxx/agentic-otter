@@ -1,7 +1,7 @@
 "use client";
 
 import { LayoutProvider, useLayout } from "@/lib/layout-context";
-import type { Version } from "@/lib/nav-config";
+import type { Owner, Bundle } from "@/lib/nav-config";
 import GlobalNav from "./GlobalNav";
 import SideNav from "./SideNav";
 import ContentArea from "./ContentArea";
@@ -21,31 +21,50 @@ import Toast from "./Toast";
  *
  * Widths and interaction rules live in lib/layout-context.tsx.
  */
-const VERSIONS: [Version, string][] = [
-  ["A", "A · Workflow driven"],
-  ["B", "B · Product line driven"],
+const OWNERS: [Owner, string][] = [
+  ["brand", "Brand owners (HQ)"],
+  ["location", "Location owners (Franchise)"],
+];
+const BUNDLES: [Bundle, string][] = [
+  ["enterprise", "Enterprise bundle"],
+  ["pos", "POS bundle"],
+  ["middleware", "Middleware"],
 ];
 
-function VersionBar() {
-  const { version, switchVersion } = useLayout();
+function Segment<T extends string>({
+  options,
+  value,
+  onChange,
+}: {
+  options: [T, string][];
+  value: T;
+  onChange: (v: T) => void;
+}) {
   return (
-    <div className="flex h-10 flex-shrink-0 items-center justify-center gap-2 bg-black text-white">
-      <span className="text-body-sm text-white/50">Prototype version</span>
-      <div className="flex items-center gap-1">
-        {VERSIONS.map(([v, label]) => (
-          <button
-            key={v}
-            onClick={() => switchVersion(v)}
-            className={`rounded-control px-3 py-1 text-body-sm transition-colors ${
-              version === v
-                ? "bg-white font-medium text-black"
-                : "text-white/70 hover:text-white"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+    <div className="flex items-center gap-0.5 rounded-control bg-white/10 p-0.5">
+      {options.map(([v, label]) => (
+        <button
+          key={v}
+          onClick={() => onChange(v)}
+          className={`rounded-[6px] px-2.5 py-1 text-body-sm transition-colors ${
+            value === v
+              ? "bg-white font-medium text-black"
+              : "text-white/70 hover:text-white"
+          }`}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function PrototypeBar() {
+  const { owner, setOwner, bundle, setBundle } = useLayout();
+  return (
+    <div className="flex h-10 flex-shrink-0 items-center justify-center gap-4 bg-black text-white">
+      <Segment options={OWNERS} value={owner} onChange={setOwner} />
+      <Segment options={BUNDLES} value={bundle} onChange={setBundle} />
     </div>
   );
 }
@@ -54,7 +73,7 @@ export default function AppShell() {
   return (
     <LayoutProvider>
       <div className="flex h-screen flex-col overflow-hidden bg-neutral-50 text-neutral-900">
-        <VersionBar />
+        <PrototypeBar />
         <GlobalNav />
         <div className="flex min-h-0 flex-1">
           <SideNav />

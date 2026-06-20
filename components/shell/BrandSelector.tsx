@@ -3,16 +3,44 @@
 import { useState } from "react";
 import { ChevronDown, Check } from "lucide-react";
 import { BRANDS } from "@/lib/nav-config";
+import { useLayout } from "@/lib/layout-context";
 import { asset } from "@/lib/asset";
 
 /**
- * Brand owner's brand switcher — sits at the very top of the side nav.
- * Collapses to just the brand emoji/avatar when the rail is icon-only.
+ * Top-of-nav switcher.
+ * - Brand owner (HQ): brand picker with dropdown.
+ * - Location owner (franchise): fixed org identity, no dropdown.
  */
 export default function BrandSelector({ expanded }: { expanded: boolean }) {
+  const { owner } = useLayout();
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState(BRANDS[0].id);
   const active = BRANDS.find((b) => b.id === activeId)!;
+
+  if (owner === "location") {
+    return (
+      <div
+        className={`flex h-11 w-full items-center gap-2 rounded-control px-2 text-content-secondary ${
+          expanded ? "" : "justify-center px-0"
+        }`}
+        title={!expanded ? "[BIGGBY] Amy Harris" : undefined}
+      >
+        <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-content-primary text-body-sm font-semibold text-white">
+          AH
+        </span>
+        {expanded && (
+          <div className="flex min-w-0 flex-col">
+            <span className="truncate text-body-md font-semibold text-content-strong">
+              [BIGGBY] Amy Harris
+            </span>
+            <span className="truncate text-body-sm text-content-weak">
+              2 locations, 2 brands
+            </span>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="relative">

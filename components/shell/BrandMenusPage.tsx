@@ -17,6 +17,7 @@ import Button from "@/components/ui/Button";
 import { PageContainer, PageHeader } from "@/components/ui/page-template";
 import { MENU_ITEMS, MENUS, MENU_TABS, type Availability } from "@/lib/menu-data";
 import { asset } from "@/lib/asset";
+import { withBrands } from "@/lib/filters";
 
 /* ------------------------------- pieces -------------------------------- */
 
@@ -245,9 +246,16 @@ function MenusTable() {
 /* -------------------------------- page --------------------------------- */
 
 export default function BrandMenusPage() {
-  const { openPanel, closePanel, rightPanel, menuTab: tab, setMenuTab: setTab } =
-    useLayout();
+  const {
+    openPanel,
+    closePanel,
+    rightPanel,
+    owner,
+    menuTab: tab,
+    setMenuTab: setTab,
+  } = useLayout();
   const insightsOpen = rightPanel === "insights";
+  const isLoc = owner === "location";
 
   return (
     <PageContainer
@@ -294,7 +302,10 @@ export default function BrandMenusPage() {
         <div className="flex flex-col gap-4">
           {/* Filters */}
           <div className="flex flex-wrap items-center gap-2">
-            {["Locations", "Station profiles", "Channels"].map((f) => (
+            {withBrands(
+              ["Locations", "Station profiles", "Channels"],
+              isLoc,
+            ).map((f) => (
               <FilterPill key={f} label={f} />
             ))}
             <FilterPill label="+2 more" />
@@ -311,7 +322,7 @@ export default function BrandMenusPage() {
       ) : tab === "Menus" ? (
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
-            {["Locations", "Channels"].map((f) => (
+            {withBrands(["Locations", "Channels"], isLoc).map((f) => (
               <FilterPill key={f} label={f} />
             ))}
             <FilterPill label="+2 more" />
