@@ -191,6 +191,7 @@ function enterpriseNav(owner: Owner, withOrdersMenus: boolean): NavItem[] {
       ? [{ id: "franchises", label: "Franchisees", icon: UsersRound, standalone: true } as NavItem]
       : []),
     { id: "locations", label: "Locations", icon: MapPin, standalone: true },
+    { id: "channels", label: "Channels", icon: Radio, standalone: true },
     {
       id: "staff",
       label: "Staff",
