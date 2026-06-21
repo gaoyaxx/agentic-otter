@@ -398,7 +398,7 @@ function HeroRow() {
           </span>
         </div>
 
-        <div className="flex flex-col gap-2 rounded-card border border-border-standard p-5">
+        <div className="flex flex-1 flex-col gap-2 rounded-card border border-border-standard p-5">
           <h3 className="font-display text-heading-sm font-medium text-content-strong">
             Suggested tasks
           </h3>
