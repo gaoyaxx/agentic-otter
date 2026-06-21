@@ -519,18 +519,18 @@ function ActivityItem({
   recoveredTime: string;
 }) {
   return (
-    <div className="flex flex-col gap-2 rounded-control border border-border-standard p-3">
-      <div className="flex items-start gap-2.5">
+    <div className="flex flex-col gap-4 rounded-control border border-border-standard p-4">
+      <div className="flex items-start gap-2">
         <img
           src={asset(logo)}
           alt=""
-          className="h-7 w-7 flex-shrink-0 rounded-thumb-xs object-cover"
+          className="h-8 w-8 flex-shrink-0 rounded-control object-cover"
         />
-        <div className="flex-1">
-          <p className="text-body-md font-medium text-content-strong">{title}</p>
-          <p className="text-body-sm text-content-weak">{sub}</p>
+        <div className="flex flex-1 flex-col gap-1">
+          <p className="text-body-lg font-semibold text-content-strong">{title}</p>
+          <p className="text-body-md text-content-weak">{sub}</p>
         </div>
-        <span className="text-body-sm tabular-nums text-content-weak">{time}</span>
+        <span className="text-body-sm tabular-nums text-content-strong">{time}</span>
       </div>
       <div className="flex items-center justify-between gap-2 rounded-control bg-positive-bg px-3 py-2">
         <span className="flex items-center gap-2 text-body-lg font-semibold text-positive">
@@ -572,14 +572,14 @@ function AlwaysOnUnpaused() {
         <ActivityItem
           logo="/logo-doordash.png"
           title="Doordash paused by staff"
-          sub="Chino Hills · Franchisee"
+          sub="Chino Hills · [Franchisee]"
           time="10:00 AM"
           recoveredTime="10:01 AM"
         />
         <ActivityItem
           logo="/logo-ubereats.png"
           title="Ubereats paused by Ubereats"
-          sub="Chino Hills · Franchisee"
+          sub="Chino Hills · [Franchisee]"
           time="9:58 AM"
           recoveredTime="9:58 AM"
         />
