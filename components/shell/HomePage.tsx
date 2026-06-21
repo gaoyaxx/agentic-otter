@@ -459,8 +459,9 @@ function RevenueRecaptured() {
         </div>
       </div>
 
-      {/* horizontal stacked bar — segment widths = each channel's share */}
-      <div className="flex h-12 w-full gap-1 overflow-hidden">
+      {/* horizontal stacked bar — segment widths = each channel's share;
+          grows to fill the card's spare vertical space */}
+      <div className="flex min-h-[48px] w-full flex-1 gap-1 overflow-hidden">
         {RR.map((r) => (
           <div
             key={r.name}
@@ -495,7 +496,7 @@ function RevenueRecaptured() {
         ))}
       </div>
 
-      <div className="border-t border-border-standard pt-3">
+      <div className="pt-1">
         <LearnMore />
       </div>
     </DashCard>
@@ -582,7 +583,7 @@ function AlwaysOnUnpaused() {
         />
       </div>
 
-      <div className="border-t border-border-standard pt-3">
+      <div className="pt-1">
         <LearnMore />
       </div>
     </DashCard>
@@ -666,7 +667,7 @@ function IncrementalPayout() {
         </div>
       </div>
 
-      <div className="border-t border-border-standard pt-3">
+      <div className="pt-1">
         <LearnMore />
       </div>
     </DashCard>
@@ -747,7 +748,7 @@ function ReputationManagement() {
         ))}
       </div>
 
-      <div className="border-t border-border-standard pt-3">
+      <div className="pt-1">
         <LearnMore />
       </div>
     </DashCard>
