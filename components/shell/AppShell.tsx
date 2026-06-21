@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { X } from "lucide-react";
 import { LayoutProvider, useLayout } from "@/lib/layout-context";
 import type { Owner, Bundle } from "@/lib/nav-config";
 import GlobalNav from "./GlobalNav";
@@ -60,20 +61,27 @@ function Segment<T extends string>({
   );
 }
 
-function PrototypeBar() {
+function PrototypeBar({ onClose }: { onClose: () => void }) {
   const { owner, setOwner, bundle, setBundle } = useLayout();
   return (
-    <div className="flex h-10 flex-shrink-0 items-center justify-center gap-4 bg-black text-white">
+    <div className="relative flex h-10 flex-shrink-0 items-center justify-center gap-4 bg-black text-white">
       <Segment options={OWNERS} value={owner} onChange={setOwner} />
       <Segment options={BUNDLES} value={bundle} onChange={setBundle} />
+      <button
+        onClick={onClose}
+        aria-label="Hide prototype controls"
+        className="absolute right-3 flex h-6 w-6 items-center justify-center rounded-control text-white/60 hover:bg-white/10 hover:text-white"
+      >
+        <X className="h-4 w-4" />
+      </button>
     </div>
   );
 }
 
-/** Wraps the prototype bar: hidden by default, revealed after hovering the
- *  top edge for 3 seconds; hides again when the pointer leaves. */
+/** Wraps the prototype bar: shown by default; the close button hides it.
+ *  Once hidden, hovering the top edge for 3 seconds reveals it again. */
 function TopBarReveal() {
-  const [shown, setShown] = useState(false);
+  const [shown, setShown] = useState(true);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const clear = () => {
     if (timer.current) clearTimeout(timer.current);
@@ -82,16 +90,18 @@ function TopBarReveal() {
   return (
     <div
       onMouseEnter={() => {
+        if (shown) return;
         clear();
         timer.current = setTimeout(() => setShown(true), 3000);
       }}
-      onMouseLeave={() => {
-        clear();
-        setShown(false);
-      }}
+      onMouseLeave={clear}
       className="flex-shrink-0"
     >
-      {shown ? <PrototypeBar /> : <div className="h-2" />}
+      {shown ? (
+        <PrototypeBar onClose={() => setShown(false)} />
+      ) : (
+        <div className="h-2" />
+      )}
     </div>
   );
 }

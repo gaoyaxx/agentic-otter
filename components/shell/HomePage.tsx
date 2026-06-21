@@ -431,10 +431,10 @@ function HeroRow() {
 /* ======================== revenue recaptured card ====================== */
 
 const RR = [
-  { name: "Doordash", pct: 42, amt: "$639", color: "#ff3008", logo: "/logo-doordash.png" },
-  { name: "Ubereats", pct: 31, amt: "$472", color: "#06c167", logo: "/logo-ubereats.png" },
-  { name: "Grubhub", pct: 18, amt: "$274", color: "#ff8000" },
-  { name: "Other", pct: 9, amt: "$136", color: "#6b7280" },
+  { name: "Doordash", pct: 42, amt: "$639", color: "#1c69e8" },
+  { name: "Ubereats", pct: 31, amt: "$472", color: "#57b6e9" },
+  { name: "Grubhub", pct: 18, amt: "$274", color: "#8c42e0" },
+  { name: "Other", pct: 9, amt: "$136", color: "#f98a53" },
 ];
 
 function RevenueRecaptured() {
@@ -443,7 +443,7 @@ function RevenueRecaptured() {
     <DashCard>
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
-          <img src={asset("/otter-ai.png")} alt="" className="h-5 w-5" />
+          <img src={asset("/card-revenue.png")} alt="" className="h-5 w-5" />
           <span className="text-body-md font-semibold text-content-strong">
             Revenue recaptured
           </span>
@@ -480,18 +480,10 @@ function RevenueRecaptured() {
             <span className="w-3 text-body-md tabular-nums text-content-weak">
               {i + 1}
             </span>
-            {r.logo ? (
-              <img
-                src={asset(r.logo)}
-                alt=""
-                className="h-5 w-5 flex-shrink-0 rounded-thumb-xs object-cover"
-              />
-            ) : (
-              <span
-                className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
-                style={{ backgroundColor: r.color }}
-              />
-            )}
+            <span
+              className="h-4 w-4 flex-shrink-0 rounded-[4px]"
+              style={{ backgroundColor: r.color }}
+            />
             <span className="flex-1 text-body-md text-content-secondary">{r.name}</span>
             <span className="w-12 text-right text-body-md tabular-nums text-content-weak">
               {r.pct}%
@@ -554,7 +546,7 @@ function AlwaysOnUnpaused() {
   return (
     <DashCard>
       <div className="flex items-center gap-2">
-        <img src={asset("/otter-ai.png")} alt="" className="h-5 w-5" />
+        <img src={asset("/card-alwayson.png")} alt="" className="h-5 w-5" />
         <span className="text-body-md font-semibold text-content-strong">
           Always on unpaused
         </span>
@@ -687,7 +679,7 @@ function ReputationManagement() {
   return (
     <DashCard>
       <div className="flex items-center gap-2">
-        <img src={asset("/otter-ai.png")} alt="" className="h-5 w-5" />
+        <img src={asset("/card-reputation.png")} alt="" className="h-5 w-5" />
         <span className="text-body-md font-semibold text-content-strong">
           Otter reputation management replied
         </span>
