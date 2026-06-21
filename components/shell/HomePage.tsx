@@ -7,7 +7,6 @@ import {
   ArrowRight,
   Sparkles,
   Star,
-  LineChart,
 } from "lucide-react";
 import { useLayout } from "@/lib/layout-context";
 import { asset } from "@/lib/asset";
@@ -101,25 +100,23 @@ function StatTile({ label, value }: { label: string; value: string }) {
 /* ============================ what's new banner ========================== */
 
 function WhatsNewCard({
-  icon,
+  iconSrc,
   badge,
   title,
   body,
   cta,
 }: {
-  icon: ReactNode;
+  iconSrc: string;
   badge: string;
   title: string;
   body: string;
   cta: string;
 }) {
   return (
-    <div className="flex flex-1 flex-col gap-3 rounded-card bg-white/[0.06] p-4">
+    <div className="flex flex-1 flex-col gap-4 rounded-card bg-bg-inverse p-5">
       <div className="flex items-start justify-between gap-3">
-        <span className="flex h-8 w-8 items-center justify-center rounded-control bg-white/10 text-content-inverse-strong">
-          {icon}
-        </span>
-        <span className="rounded-thumb-xs bg-primary px-2 py-0.5 text-body-sm font-medium text-white">
+        <img src={asset(iconSrc)} alt="" className="h-8 w-8 rounded-control" />
+        <span className="rounded-[6px] bg-primary px-1.5 py-1 text-body-md font-semibold text-white">
           {badge}
         </span>
       </div>
@@ -139,7 +136,10 @@ function WhatsNewCard({
 
 function WhatsNew({ onClose }: { onClose: () => void }) {
   return (
-    <div className="relative flex flex-col gap-4 rounded-page bg-bg-inverse p-5">
+    <div
+      className="relative flex flex-col gap-4 rounded-page p-5"
+      style={{ backgroundColor: "#0d0d0d" }}
+    >
       <div className="flex items-center justify-between">
         <h2 className="font-display text-heading-sm text-content-inverse-strong">
           What&apos;s new?
@@ -154,14 +154,14 @@ function WhatsNew({ onClose }: { onClose: () => void }) {
       </div>
       <div className="flex flex-col gap-4 md:flex-row">
         <WhatsNewCard
-          icon={<Star className="h-4 w-4" />}
+          iconSrc="/whatsnew-momo.png"
           badge="New integration"
           title="Momos is now available in Otter"
           body="Manage your reviews and ratings with Momos directly in Otter, so you can track feedback and improve your online reputation in one place."
           cta="Get started"
         />
         <WhatsNewCard
-          icon={<LineChart className="h-4 w-4" />}
+          iconSrc="/whatsnew-ltv.png"
           badge="New dashboard"
           title="Customer LTV is now live"
           body="See each eater's lifetime value and understand how your campaigns drive repeat visits and revenue over time."
