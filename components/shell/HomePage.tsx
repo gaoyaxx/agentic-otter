@@ -4,13 +4,10 @@ import { useState, type ReactNode } from "react";
 import {
   X,
   ChevronDown,
-  ChevronRight,
   ArrowRight,
   Sparkles,
   Star,
   LineChart,
-  CheckSquare,
-  Square,
 } from "lucide-react";
 import { useLayout } from "@/lib/layout-context";
 import { asset } from "@/lib/asset";
@@ -359,13 +356,12 @@ function ChartTooltip({
 /* ============================== hero block ============================= */
 
 const TASKS = [
-  "View weekly insights",
-  "Generate monthly slides",
-  "Adjust marketing budget",
+  { label: "View weekly insights", icon: "/task-weekly-insights.png" },
+  { label: "Generate monthly slides", icon: "/task-monthly-slides.png" },
+  { label: "Adjust marketing budget", icon: "/task-marketing-budget.png" },
 ];
 
 function HeroRow() {
-  const [done, setDone] = useState<Record<string, boolean>>({});
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
       {/* left: recovered + suggested tasks */}
@@ -383,37 +379,23 @@ function HeroRow() {
           </span>
         </div>
 
-        <div className="flex flex-col gap-3 rounded-card border border-border-standard p-4">
-          <span className="text-body-md font-semibold text-content-strong">
+        <div className="flex flex-col gap-2 rounded-card border border-border-standard p-5">
+          <h3 className="font-display text-heading-sm font-medium text-content-strong">
             Suggested tasks
-          </span>
+          </h3>
           <div className="flex flex-col">
-            {TASKS.map((t) => {
-              const checked = !!done[t];
-              return (
-                <button
-                  key={t}
-                  onClick={() => setDone((d) => ({ ...d, [t]: !d[t] }))}
-                  className="flex items-center gap-2.5 border-t border-border-standard py-2.5 text-left first:border-t-0"
-                >
-                  {checked ? (
-                    <CheckSquare className="h-4 w-4 flex-shrink-0 text-primary" />
-                  ) : (
-                    <Square className="h-4 w-4 flex-shrink-0 text-content-weak" />
-                  )}
-                  <span
-                    className={`flex-1 text-body-md ${
-                      checked
-                        ? "text-content-weak line-through"
-                        : "text-content-secondary"
-                    }`}
-                  >
-                    {t}
-                  </span>
-                  <ChevronRight className="h-4 w-4 flex-shrink-0 text-content-weak" />
-                </button>
-              );
-            })}
+            {TASKS.map((t) => (
+              <button
+                key={t.label}
+                className="flex items-center gap-3 border-t border-border-standard px-2 py-3 text-left first:border-t-0"
+              >
+                <img src={asset(t.icon)} alt="" className="h-6 w-6 flex-shrink-0" />
+                <span className="flex-1 text-body-md font-semibold text-content-strong">
+                  {t.label}
+                </span>
+                <ArrowRight className="h-5 w-5 flex-shrink-0 text-content-strong" />
+              </button>
+            ))}
           </div>
         </div>
       </div>
