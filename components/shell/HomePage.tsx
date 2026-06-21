@@ -532,12 +532,14 @@ function ActivityItem({
         </div>
         <span className="text-body-sm tabular-nums text-content-weak">{time}</span>
       </div>
-      <div className="flex items-center justify-between rounded-control bg-positive-bg px-2.5 py-1.5">
-        <span className="flex items-center gap-1.5 text-body-sm font-medium text-positive">
-          <img src={asset("/icon-recovered.png")} alt="" className="h-3.5 w-3.5" />
+      <div className="flex items-center justify-between gap-2 rounded-control bg-positive-bg px-3 py-2">
+        <span className="flex items-center gap-2 text-body-lg font-semibold text-positive">
+          <img src={asset("/icon-recovered.png")} alt="" className="h-5 w-5" />
           Recovered by Always on
         </span>
-        <span className="text-body-sm tabular-nums text-positive">{recoveredTime}</span>
+        <span className="text-body-sm tabular-nums text-content-strong">
+          {recoveredTime}
+        </span>
       </div>
     </div>
   );
@@ -723,12 +725,15 @@ function ReputationManagement() {
           </div>
           <span className="text-body-sm tabular-nums text-content-weak">10:00 AM</span>
         </div>
-        <div className="rounded-control bg-canvas p-2.5">
-          <p className="flex items-center gap-1.5 text-body-sm font-medium text-content-strong">
-            <img src={asset("/icon-replied-otter.png")} alt="" className="h-3.5 w-3.5" />
-            Replied by Otter
-          </p>
-          <p className="mt-1 text-body-sm text-content-weak">
+        <div className="rounded-control bg-neutral-bg p-3">
+          <div className="flex items-center justify-between gap-2">
+            <span className="flex items-center gap-2 text-body-lg font-semibold text-neutral">
+              <img src={asset("/icon-replied-otter.png")} alt="" className="h-5 w-5" />
+              Replied by Otter
+            </span>
+            <span className="text-body-sm tabular-nums text-content-strong">9:58 AM</span>
+          </div>
+          <p className="mt-2 text-body-md text-content-weak">
             Hi Joe, we&apos;re really sorry your order arrived cold and later than
             expected. That&apos;s not the experience we want to have. We&apos;ll
             follow…
