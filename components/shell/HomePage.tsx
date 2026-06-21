@@ -465,7 +465,7 @@ function RevenueRecaptured() {
         {RR.map((r) => (
           <div
             key={r.name}
-            className="h-full rounded-[4px]"
+            className="h-full rounded-control"
             style={{ width: `${r.pct}%`, backgroundColor: r.color }}
           />
         ))}
@@ -616,8 +616,8 @@ function IncrementalPayout() {
         <span className="text-body-sm text-content-weak">Marketing pilot starts at Jun 22</span>
       </div>
 
-      {/* split bar */}
-      <div className="flex h-20 gap-1.5">
+      {/* split bar — grows to fill the card's spare vertical space */}
+      <div className="flex min-h-[80px] flex-1 gap-1.5">
         <div
           className="flex flex-col justify-end rounded-control bg-primary p-3"
           style={{ width: "54.3%" }}
