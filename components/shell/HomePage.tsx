@@ -193,8 +193,8 @@ const WF: WfBar[] = [
 
 const WF_COLOR: Record<WfBar["kind"], string> = {
   total: "#1c69e8",
-  up: "#46b760",
-  down: "#da252f",
+  up: "#5faf6f",
+  down: "#d96b6b",
 };
 
 function fmt(b: WfBar) {
