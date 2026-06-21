@@ -765,7 +765,7 @@ export default function HomePage() {
       <div className="flex flex-col gap-6 rounded-page bg-surface p-6 shadow-elevation-low">
         {/* header */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="font-display text-heading-lg text-content-strong">
+          <h1 className="font-display text-heading-lg font-medium text-content-strong">
             Good morning, {greetingName}.
           </h1>
           <div className="flex items-center gap-2">
