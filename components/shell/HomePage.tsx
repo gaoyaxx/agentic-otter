@@ -651,7 +651,7 @@ function IncrementalPayout() {
           >
             <span className="flex flex-1 items-center gap-2">
               <span
-                className="h-2.5 w-2.5 rounded-full"
+                className="h-4 w-4 flex-shrink-0 rounded-[4px]"
                 style={{ backgroundColor: c.color }}
               />
               <span className="text-content-secondary">{c.name}</span>
