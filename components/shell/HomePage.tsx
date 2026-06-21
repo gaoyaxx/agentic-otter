@@ -58,9 +58,13 @@ function SegToggle({
   );
 }
 
-function LearnMore() {
+function LearnMore({ to }: { to?: string }) {
+  const { setActivePage } = useLayout();
   return (
-    <button className="focus-ring flex items-center gap-1 text-body-md font-medium text-content-strong hover:opacity-70">
+    <button
+      onClick={() => to && setActivePage(to)}
+      className="focus-ring flex items-center gap-1 text-body-md font-medium text-content-strong hover:opacity-70"
+    >
       Learn more
       <ArrowRight className="h-4 w-4" />
     </button>
@@ -497,7 +501,7 @@ function RevenueRecaptured() {
       </div>
 
       <div className="pt-1">
-        <LearnMore />
+        <LearnMore to="revenue-recapture" />
       </div>
     </DashCard>
   );
@@ -586,7 +590,7 @@ function AlwaysOnUnpaused() {
       </div>
 
       <div className="pt-1">
-        <LearnMore />
+        <LearnMore to="availability" />
       </div>
     </DashCard>
   );
@@ -670,7 +674,7 @@ function IncrementalPayout() {
       </div>
 
       <div className="pt-1">
-        <LearnMore />
+        <LearnMore to="marketing-automation" />
       </div>
     </DashCard>
   );
@@ -754,7 +758,7 @@ function ReputationManagement() {
       </div>
 
       <div className="pt-1">
-        <LearnMore />
+        <LearnMore to="reputation-management" />
       </div>
     </DashCard>
   );
