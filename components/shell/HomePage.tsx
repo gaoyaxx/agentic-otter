@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   X,
   ChevronDown,
@@ -205,47 +205,25 @@ function fmt(b: WfBar) {
 }
 
 function WaterfallChart() {
-  // Measure the container so the chart fills its height: as the browser width
-  // changes (and the left column grows/shrinks), the y-axis scale stretches so
-  // the chart's baseline always meets the bottom of the Suggested tasks card.
-  const ref = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ w: 780, h: 300 });
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => {
-      const { width, height } = e.contentRect;
-      if (width > 0 && height > 0) setSize({ w: width, h: height });
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  const { w: W, h: H } = size;
+  const W = 780;
+  const H = 320;
   const axisX = 44;
-  const top = 24;
-  const bottom = H - 44; // leave room for two-line x labels
-  const plotH = Math.max(bottom - top, 40);
+  const top = 28;
+  const bottom = 268; // y for $0
+  const plotH = bottom - top; // 240 → 20M
   const max = 20;
   const y = (v: number) => bottom - (v / max) * plotH;
 
   const slots = WF.length;
   const slotW = (W - axisX - 12) / slots;
-  const barW = Math.min(46, slotW * 0.55);
+  const barW = 46;
   const barX = (i: number) => axisX + i * slotW + (slotW - barW) / 2;
 
   const gridVals = [0, 5, 10, 15, 20];
   const runningAfter = [16.1, 15.46, 18.02, 15.04, 13.62, 14.1];
 
   return (
-    <div ref={ref} className="h-full min-h-[260px] w-full">
-    <svg
-      width="100%"
-      height="100%"
-      viewBox={`0 0 ${W} ${H}`}
-      preserveAspectRatio="none"
-      role="img"
-    >
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img">
       {/* gridlines + y labels */}
       {gridVals.map((g) => (
         <g key={g}>
@@ -352,7 +330,6 @@ function WaterfallChart() {
         text2="revenue"
       />
     </svg>
-    </div>
   );
 }
 
@@ -435,9 +412,9 @@ function HeroRow() {
         </div>
       </div>
 
-      {/* right: waterfall — fills the card height so the chart baseline lines
-          up with the bottom of the Suggested tasks card on the left. */}
-      <div className="flex flex-col rounded-card border border-border-standard p-4">
+      {/* right: waterfall — bottom-aligned so the chart baseline lines up
+          with the bottom of the Suggested tasks card on the left. */}
+      <div className="flex flex-col justify-end rounded-card border border-border-standard p-4">
         <WaterfallChart />
       </div>
     </div>
