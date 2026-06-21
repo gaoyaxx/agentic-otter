@@ -126,7 +126,7 @@ function WhatsNewCard({
         </p>
         <p className="text-body-md text-content-inverse-weak">{body}</p>
       </div>
-      <button className="mt-1 flex h-8 w-fit items-center gap-1.5 self-end rounded-control bg-white px-3 text-body-md font-medium text-content-strong hover:bg-white/90">
+      <button className="mt-1 flex h-8 w-fit items-center gap-1.5 self-start rounded-control bg-white px-3 text-body-md font-medium text-content-strong hover:bg-white/90">
         {cta}
         <ArrowRight className="h-4 w-4" />
       </button>
