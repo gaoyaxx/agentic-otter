@@ -434,15 +434,24 @@ function HeroRow() {
 
 /* ======================== revenue recaptured card ====================== */
 
-const RR = [
+const RR_CHANNELS = [
   { name: "Doordash", pct: 42, amt: "$639", color: "#1c69e8" },
   { name: "Ubereats", pct: 31, amt: "$472", color: "#57b6e9" },
   { name: "Grubhub", pct: 18, amt: "$274", color: "#8c42e0" },
   { name: "Other", pct: 9, amt: "$136", color: "#f98a53" },
 ];
 
+const RR_FRANCHISEES = [
+  { name: "Chino Hills", pct: 38, amt: "$578", color: "#1c69e8" },
+  { name: "Riverside", pct: 27, amt: "$411", color: "#57b6e9" },
+  { name: "Pasadena", pct: 19, amt: "$289", color: "#8c42e0" },
+  { name: "Anaheim", pct: 11, amt: "$167", color: "#f98a53" },
+  { name: "Other", pct: 5, amt: "$76", color: "#9ca3af" },
+];
+
 function RevenueRecaptured() {
   const [seg, setSeg] = useState("Channels");
+  const RR = seg === "Franchisees" ? RR_FRANCHISEES : RR_CHANNELS;
   return (
     <DashCard>
       <div className="flex items-start justify-between gap-3">
