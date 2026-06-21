@@ -32,6 +32,7 @@ import {
 import BrandMenusPage from "./BrandMenusPage";
 import SalesSummary from "./SalesSummary";
 import OperationHours from "./OperationHours";
+import HomePage from "./HomePage";
 
 /* ----------------------------- mock metrics ----------------------------- */
 
@@ -147,7 +148,9 @@ export default function ContentArea() {
   return (
     <main className="min-w-0 flex-1 overflow-hidden bg-canvas p-4">
       <div className="h-full w-full">
-        {activePage === "brand-menus" ? (
+        {activePage === "home" ? (
+          <HomePage />
+        ) : activePage === "brand-menus" ? (
           <BrandMenusPage />
         ) : activePage === "operation-hours" ? (
           <OperationHours />
