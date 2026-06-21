@@ -180,6 +180,7 @@ interface WfBar {
   base: number;
   delta: number;
   kind: "total" | "up" | "down";
+  color?: string;
 }
 const WF: WfBar[] = [
   { label: "Gross sales", sub: "excl. marketing", base: 0, delta: 16.1, kind: "total" },
@@ -188,7 +189,7 @@ const WF: WfBar[] = [
   { label: "Commission cost", sub: "marketing", base: 15.04, delta: 2.98, kind: "down" },
   { label: "Adjustments", sub: "errors & cancels", base: 13.62, delta: 1.42, kind: "down" },
   { label: "Net Recaptured", sub: "by Otter", base: 13.62, delta: 0.48, kind: "up" },
-  { label: "Net payout", sub: "", base: 0, delta: 14.1, kind: "total" },
+  { label: "Net payout", sub: "", base: 0, delta: 14.1, kind: "total", color: "#57b6e9" },
 ];
 
 const WF_COLOR: Record<WfBar["kind"], string> = {
@@ -274,7 +275,7 @@ function WaterfallChart() {
               width={barW}
               height={Math.max(h, 2)}
               rx={4}
-              fill={WF_COLOR[b.kind]}
+              fill={b.color ?? WF_COLOR[b.kind]}
             />
             <text
               x={cx}
@@ -295,8 +296,8 @@ function WaterfallChart() {
               x={cx}
               y={bottom + 18}
               textAnchor="middle"
-              className="fill-content-weak"
-              style={{ fontSize: 10.5 }}
+              fill="#141414"
+              style={{ fontSize: 10.5, fontWeight: 500 }}
             >
               {b.label}
             </text>
@@ -305,7 +306,7 @@ function WaterfallChart() {
                 x={cx}
                 y={bottom + 31}
                 textAnchor="middle"
-                className="fill-content-weak"
+                fill="#525252"
                 style={{ fontSize: 10.5 }}
               >
                 {b.sub}
@@ -315,13 +316,24 @@ function WaterfallChart() {
         );
       })}
 
-      {/* annotation tooltips */}
-      <ChartTooltip x={barX(2) + barW / 2} y={132} text="Your marketing" text2="automation output" />
-      <ChartTooltip x={barX(4) + barW / 2} y={170} text="Your recaptured" text2="revenue" />
+      {/* annotation tooltips — point up to the green bars */}
+      <ChartTooltip
+        x={barX(2) + barW / 2}
+        y={y(15.46) + 14}
+        text="Your marketing"
+        text2="automation output"
+      />
+      <ChartTooltip
+        x={barX(5) + barW / 2}
+        y={y(13.62) + 14}
+        text="Your recaptured"
+        text2="revenue"
+      />
     </svg>
   );
 }
 
+/** Dark annotation tooltip with its tip on top, pointing up at the bar above. */
 function ChartTooltip({
   x,
   y,
@@ -338,11 +350,11 @@ function ChartTooltip({
   const left = x - w / 2;
   return (
     <g>
-      <rect x={left} y={y} width={w} height={h} rx={8} fill="#1a1a1a" />
       <polygon
-        points={`${x - 5},${y + h} ${x + 5},${y + h} ${x},${y + h + 6}`}
+        points={`${x - 5},${y} ${x + 5},${y} ${x},${y - 6}`}
         fill="#1a1a1a"
       />
+      <rect x={left} y={y} width={w} height={h} rx={8} fill="#1a1a1a" />
       <text x={x} y={y + 17} textAnchor="middle" fill="#ffffff" style={{ fontSize: 11 }}>
         {text}
       </text>
@@ -400,8 +412,9 @@ function HeroRow() {
         </div>
       </div>
 
-      {/* right: waterfall */}
-      <div className="flex flex-col rounded-card border border-border-standard p-4">
+      {/* right: waterfall — bottom-aligned so the chart baseline lines up
+          with the bottom of the Suggested tasks card on the left. */}
+      <div className="flex flex-col justify-end rounded-card border border-border-standard p-4">
         <WaterfallChart />
       </div>
     </div>
