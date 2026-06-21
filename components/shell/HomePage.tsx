@@ -768,7 +768,7 @@ export default function HomePage() {
   const greetingName = owner === "location" ? "Amy" : "Brian";
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-auto scrollbar-autohide">
+    <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-auto scrollbar-autohide px-1.5 py-1">
       {showWhatsNew && <WhatsNew onClose={() => setShowWhatsNew(false)} />}
 
       <div className="flex flex-col gap-6 rounded-page bg-surface p-6 shadow-elevation-low">
