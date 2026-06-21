@@ -82,7 +82,7 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
   const [navExpanded, setNavExpanded] = useState(true);
   const [navHover, setNavHover] = useState(false);
   const [rightPanel, setRightPanel] = useState<RightPanelKind>("insights");
-  const [activePage, setActivePage] = useState("sales");
+  const [activePage, setActivePage] = useState("home");
   const [menuTab, setMenuTab] = useState("Menus");
   const [generateModalOpen, setGenerateModalOpen] = useState(false);
   const [descriptionsApplied, setDescriptionsApplied] = useState(false);
@@ -128,7 +128,7 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
 
   const setBundle = useCallback((b: Bundle) => {
     setBundleState(b);
-    setActivePage("sales"); // valid in every bundle
+    setActivePage("home"); // valid in every bundle
   }, []);
 
   // On page change: if the page has insights and nothing is open, default to

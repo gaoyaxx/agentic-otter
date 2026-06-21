@@ -5,7 +5,6 @@ import {
   X,
   ChevronDown,
   ArrowRight,
-  Sparkles,
   Star,
 } from "lucide-react";
 import { useLayout } from "@/lib/layout-context";
@@ -88,9 +87,9 @@ function DashCard({
 /** Stat tile (light grey, used for the small metric callouts). */
 function StatTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-1 flex-col gap-1 rounded-control bg-canvas px-3.5 py-3">
-      <span className="text-body-sm text-content-weak">{label}</span>
-      <span className="text-heading-sm font-display text-content-strong">
+    <div className="flex flex-1 flex-col gap-2 rounded-control border border-border-standard px-4 py-3">
+      <span className="text-body-md text-content-weak">{label}</span>
+      <span className="text-heading-md font-display text-content-strong">
         {value}
       </span>
     </div>
@@ -205,6 +204,7 @@ function fmt(b: WfBar) {
 }
 
 function WaterfallChart() {
+  const [hover, setHover] = useState<number | null>(null);
   const W = 780;
   const H = 320;
   const axisX = 44;
@@ -276,6 +276,9 @@ function WaterfallChart() {
               height={Math.max(h, 2)}
               rx={4}
               fill={b.color ?? WF_COLOR[b.kind]}
+              style={{ cursor: b.kind === "up" ? "pointer" : "default" }}
+              onMouseEnter={() => b.kind === "up" && setHover(i)}
+              onMouseLeave={() => setHover(null)}
             />
             <text
               x={cx}
@@ -316,19 +319,23 @@ function WaterfallChart() {
         );
       })}
 
-      {/* annotation tooltips — point up to the green bars */}
-      <ChartTooltip
-        x={barX(2) + barW / 2}
-        y={y(15.46) + 14}
-        text="Your marketing"
-        text2="automation output"
-      />
-      <ChartTooltip
-        x={barX(5) + barW / 2}
-        y={y(13.62) + 14}
-        text="Your recaptured"
-        text2="revenue"
-      />
+      {/* annotation tooltips — shown on hovering the green bars */}
+      {hover === 2 && (
+        <ChartTooltip
+          x={barX(2) + barW / 2}
+          y={y(15.46) + 14}
+          text="Your marketing"
+          text2="automation output"
+        />
+      )}
+      {hover === 5 && (
+        <ChartTooltip
+          x={barX(5) + barW / 2}
+          y={y(13.62) + 14}
+          text="Your recaptured"
+          text2="revenue"
+        />
+      )}
     </svg>
   );
 }
@@ -424,10 +431,10 @@ function HeroRow() {
 /* ======================== revenue recaptured card ====================== */
 
 const RR = [
-  { name: "Doordash", pct: "21%", amt: "$1,287,000", color: "#1c69e8" },
-  { name: "Grubhub", pct: "20%", amt: "$1,053,000", color: "#4ca7e8" },
-  { name: "Ubereats", pct: "20%", amt: "$1,053,000", color: "#6a29bb" },
-  { name: "Other", pct: "20%", amt: "$1,053,000", color: "#ee7b3d" },
+  { name: "Doordash", pct: 42, amt: "$639", color: "#ff3008", logo: "/logo-doordash.png" },
+  { name: "Ubereats", pct: 31, amt: "$472", color: "#06c167", logo: "/logo-ubereats.png" },
+  { name: "Grubhub", pct: 18, amt: "$274", color: "#ff8000" },
+  { name: "Other", pct: 9, amt: "$136", color: "#6b7280" },
 ];
 
 function RevenueRecaptured() {
@@ -445,20 +452,20 @@ function RevenueRecaptured() {
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="font-display text-display-sm text-content-strong">$1,521</span>
+        <span className="font-display text-heading-lg text-content-strong">$1,521</span>
         <div className="flex items-center gap-2">
           <Delta />
           <span className="text-body-sm text-content-weak">vs prior 30 days</span>
         </div>
       </div>
 
-      {/* mini bars */}
-      <div className="flex h-24 items-end gap-2">
-        {[0.95, 0.78, 0.78, 0.62].map((hpct, i) => (
+      {/* horizontal stacked bar — segment widths = each channel's share */}
+      <div className="flex h-12 w-full gap-1 overflow-hidden">
+        {RR.map((r) => (
           <div
-            key={i}
-            className="flex-1 rounded-t-[4px]"
-            style={{ height: `${hpct * 100}%`, backgroundColor: RR[i].color }}
+            key={r.name}
+            className="h-full rounded-[4px]"
+            style={{ width: `${r.pct}%`, backgroundColor: r.color }}
           />
         ))}
       </div>
@@ -473,15 +480,23 @@ function RevenueRecaptured() {
             <span className="w-3 text-body-md tabular-nums text-content-weak">
               {i + 1}
             </span>
-            <span
-              className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
-              style={{ backgroundColor: r.color }}
-            />
+            {r.logo ? (
+              <img
+                src={asset(r.logo)}
+                alt=""
+                className="h-5 w-5 flex-shrink-0 rounded-thumb-xs object-cover"
+              />
+            ) : (
+              <span
+                className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
+                style={{ backgroundColor: r.color }}
+              />
+            )}
             <span className="flex-1 text-body-md text-content-secondary">{r.name}</span>
             <span className="w-12 text-right text-body-md tabular-nums text-content-weak">
-              {r.pct}
+              {r.pct}%
             </span>
-            <span className="w-24 text-right text-body-md tabular-nums text-content-strong">
+            <span className="w-20 text-right text-body-md tabular-nums text-content-strong">
               {r.amt}
             </span>
           </div>
@@ -513,12 +528,11 @@ function ActivityItem({
   return (
     <div className="flex flex-col gap-2 rounded-control border border-border-standard p-3">
       <div className="flex items-start gap-2.5">
-        <span
-          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-thumb-xs text-xs font-bold text-white"
-          style={{ backgroundColor: logo === "Doordash" ? "#ff3008" : "#06c167" }}
-        >
-          {logo[0]}
-        </span>
+        <img
+          src={asset(logo)}
+          alt=""
+          className="h-7 w-7 flex-shrink-0 rounded-thumb-xs object-cover"
+        />
         <div className="flex-1">
           <p className="text-body-md font-medium text-content-strong">{title}</p>
           <p className="text-body-sm text-content-weak">{sub}</p>
@@ -527,7 +541,7 @@ function ActivityItem({
       </div>
       <div className="flex items-center justify-between rounded-control bg-positive-bg px-2.5 py-1.5">
         <span className="flex items-center gap-1.5 text-body-sm font-medium text-positive">
-          <Sparkles className="h-3.5 w-3.5" />
+          <img src={asset("/icon-recovered.png")} alt="" className="h-3.5 w-3.5" />
           Recovered by Always on
         </span>
         <span className="text-body-sm tabular-nums text-positive">{recoveredTime}</span>
@@ -547,7 +561,7 @@ function AlwaysOnUnpaused() {
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="font-display text-display-sm text-content-strong">130 times</span>
+        <span className="font-display text-heading-lg text-content-strong">130 times</span>
         <div className="flex items-center gap-2">
           <Delta />
           <span className="text-body-sm text-content-weak">vs prior 30 days</span>
@@ -561,14 +575,14 @@ function AlwaysOnUnpaused() {
 
       <div className="flex flex-col gap-2">
         <ActivityItem
-          logo="Doordash"
+          logo="/logo-doordash.png"
           title="Doordash paused by staff"
           sub="Chino Hills · Franchisee"
           time="10:00 AM"
           recoveredTime="10:01 AM"
         />
         <ActivityItem
-          logo="Ubereats"
+          logo="/logo-ubereats.png"
           title="Ubereats paused by Ubereats"
           sub="Chino Hills · Franchisee"
           time="9:58 AM"
@@ -596,7 +610,7 @@ function IncrementalPayout() {
     <DashCard>
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
-          <img src={asset("/otter-ai.png")} alt="" className="h-5 w-5" />
+          <img src={asset("/card-incremental.png")} alt="" className="h-5 w-5" />
           <span className="text-body-md font-semibold text-content-strong">
             Incremental marketing payout
           </span>
@@ -605,7 +619,7 @@ function IncrementalPayout() {
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="font-display text-display-sm text-content-strong">$5,891</span>
+        <span className="font-display text-heading-lg text-content-strong">$5,891</span>
         <span className="text-body-sm text-content-weak">Marketing pilot starts at Jun 22</span>
       </div>
 
@@ -680,7 +694,7 @@ function ReputationManagement() {
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="font-display text-display-sm text-content-strong">245 reviews</span>
+        <span className="font-display text-heading-lg text-content-strong">245 reviews</span>
         <div className="flex items-center gap-2">
           <Delta />
           <span className="text-body-sm text-content-weak">vs prior 30 days</span>
@@ -695,11 +709,13 @@ function ReputationManagement() {
 
       <div className="flex flex-col gap-2 rounded-control border border-border-standard p-3">
         <div className="flex items-start gap-2.5">
-          <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-thumb-xs bg-[#ff3008] text-xs font-bold text-white">
-            D
-          </span>
+          <img
+            src={asset("/logo-doordash.png")}
+            alt=""
+            className="h-7 w-7 flex-shrink-0 rounded-thumb-xs object-cover"
+          />
           <div className="flex-1">
-            <div className="flex items-center gap-1 text-notice">
+            <div className="flex items-center gap-1 text-content-strong">
               {[0, 1].map((i) => (
                 <Star key={i} className="h-3.5 w-3.5 fill-current" />
               ))}
@@ -716,7 +732,7 @@ function ReputationManagement() {
         </div>
         <div className="rounded-control bg-canvas p-2.5">
           <p className="flex items-center gap-1.5 text-body-sm font-medium text-content-strong">
-            <Sparkles className="h-3.5 w-3.5 text-primary" />
+            <img src={asset("/icon-replied-otter.png")} alt="" className="h-3.5 w-3.5" />
             Replied by Otter
           </p>
           <p className="mt-1 text-body-sm text-content-weak">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { LayoutProvider, useLayout } from "@/lib/layout-context";
 import type { Owner, Bundle } from "@/lib/nav-config";
 import GlobalNav from "./GlobalNav";
@@ -69,11 +70,37 @@ function PrototypeBar() {
   );
 }
 
+/** Wraps the prototype bar: hidden by default, revealed after hovering the
+ *  top edge for 3 seconds; hides again when the pointer leaves. */
+function TopBarReveal() {
+  const [shown, setShown] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clear = () => {
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = null;
+  };
+  return (
+    <div
+      onMouseEnter={() => {
+        clear();
+        timer.current = setTimeout(() => setShown(true), 3000);
+      }}
+      onMouseLeave={() => {
+        clear();
+        setShown(false);
+      }}
+      className="flex-shrink-0"
+    >
+      {shown ? <PrototypeBar /> : <div className="h-2" />}
+    </div>
+  );
+}
+
 export default function AppShell() {
   return (
     <LayoutProvider>
       <div className="flex h-screen flex-col overflow-hidden bg-neutral-50 text-neutral-900">
-        <PrototypeBar />
+        <TopBarReveal />
         <GlobalNav />
         <div className="flex min-h-0 flex-1">
           <SideNav />
