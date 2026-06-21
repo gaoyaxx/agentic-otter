@@ -114,7 +114,7 @@ function BreakdownRow({ b }: { b: Breakdown }) {
 
 function ViewFullReport() {
   return (
-    <button className="focus-ring flex items-center gap-1 rounded-control text-body-md font-medium text-primary-text hover:text-primary-text-hover">
+    <button className="focus-ring flex items-center gap-1 rounded-control text-body-md font-medium text-content-strong hover:opacity-70">
       View full report
       <ArrowRight className="h-4 w-4" />
     </button>
