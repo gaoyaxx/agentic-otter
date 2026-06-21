@@ -702,28 +702,28 @@ function ReputationManagement() {
         <StatTile label="Review replied" value="63.2%" />
       </div>
 
-      <div className="flex flex-col gap-2 rounded-control border border-border-standard p-3">
-        <div className="flex items-start gap-2.5">
+      <div className="flex flex-col gap-4 rounded-control border border-border-standard p-4">
+        <div className="flex items-start gap-2">
           <img
             src={asset("/logo-doordash.png")}
             alt=""
-            className="h-7 w-7 flex-shrink-0 rounded-thumb-xs object-cover"
+            className="h-8 w-8 flex-shrink-0 rounded-control object-cover"
           />
-          <div className="flex-1">
+          <div className="flex flex-1 flex-col gap-1">
             <div className="flex items-center gap-1 text-content-strong">
               {[0, 1].map((i) => (
-                <Star key={i} className="h-3.5 w-3.5 fill-current" />
+                <Star key={i} className="h-4 w-4 fill-current" />
               ))}
               {[0, 1, 2].map((i) => (
-                <Star key={`e${i}`} className="h-3.5 w-3.5 text-border-secondary" />
+                <Star key={`e${i}`} className="h-4 w-4 text-border-secondary" />
               ))}
             </div>
-            <p className="mt-1 text-body-md text-content-strong">
+            <p className="text-body-lg text-content-strong">
               &ldquo;The order was late and the food was cold&rdquo;
             </p>
-            <p className="text-body-sm text-content-weak">Chino Hills · Franchisee</p>
+            <p className="text-body-md text-content-weak">Chino Hills · [Franchisee]</p>
           </div>
-          <span className="text-body-sm tabular-nums text-content-weak">10:00 AM</span>
+          <span className="text-body-sm tabular-nums text-content-strong">10:00 AM</span>
         </div>
         <div className="rounded-control bg-neutral-bg p-3">
           <div className="flex items-center justify-between gap-2">
