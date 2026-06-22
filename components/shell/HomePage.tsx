@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import {
   X,
   ChevronDown,
@@ -769,8 +769,135 @@ function ReviewsPendingReplies() {
   );
 }
 
+interface Review {
+  logo: string;
+  rating: number;
+  quote: string;
+  location: string;
+  time: string;
+  replyTime: string;
+  reply: string;
+}
+const REVIEWS: Review[] = [
+  {
+    logo: "/logo-doordash.png",
+    rating: 2,
+    quote: "The order was late and the food was cold",
+    location: "Chino Hills · [Franchisee]",
+    time: "10:00 AM",
+    replyTime: "9:58 AM",
+    reply:
+      "Hi Joe, we're really sorry your order arrived cold and later than expected. That's not the experience we want to have. We'll follow…",
+  },
+  {
+    logo: "/logo-ubereats.png",
+    rating: 1,
+    quote: "Half my items were missing and there were no utensils",
+    location: "Riverside · [Franchisee]",
+    time: "9:42 AM",
+    replyTime: "9:45 AM",
+    reply:
+      "Hi Maria, so sorry items were missing. We've refunded the missing items and flagged this with the kitchen so it doesn't happen again. Please…",
+  },
+  {
+    logo: "/logo-doordash.png",
+    rating: 3,
+    quote: "Food was good, but the portion felt smaller than usual",
+    location: "Pasadena · [Franchisee]",
+    time: "8:31 AM",
+    replyTime: "8:34 AM",
+    reply:
+      "Thanks for the note, Andre! We've shared your feedback on portion size with the location team and we're looking into it. We appreciate you…",
+  },
+  {
+    logo: "/logo-ubereats.png",
+    rating: 4,
+    quote: "Tasty and on time — just wish the packaging was sturdier",
+    location: "Chino Hills · [Franchisee]",
+    time: "Yesterday",
+    replyTime: "Yesterday",
+    reply:
+      "Thanks for the kind words, Leo! Great tip on packaging — we're rolling out sturdier containers this month. Hope to see you again soon!",
+  },
+  {
+    logo: "/logo-doordash.png",
+    rating: 1,
+    quote: "Driver left my order at the wrong door",
+    location: "Riverside · [Franchisee]",
+    time: "Yesterday",
+    replyTime: "Yesterday",
+    reply:
+      "Hi Sam, we're sorry your order went to the wrong address. We've reported this to our delivery partner and refunded your order in full…",
+  },
+  {
+    logo: "/logo-ubereats.png",
+    rating: 2,
+    quote: "Waited 50 minutes and the fries showed up soggy",
+    location: "Anaheim · [Franchisee]",
+    time: "Yesterday",
+    replyTime: "Yesterday",
+    reply:
+      "Hi Priya, sorry about the long wait and the soggy fries — that's not our standard. We've added a credit to your account for next time…",
+  },
+  {
+    logo: "/logo-doordash.png",
+    rating: 5,
+    quote: "Best wings in town — super fresh and fast!",
+    location: "Pasadena · [Franchisee]",
+    time: "2 days ago",
+    replyTime: "2 days ago",
+    reply:
+      "Thank you, Dana! We're thrilled you loved the wings. We'll pass your shoutout along to the kitchen crew — see you next order!",
+  },
+];
+
+function ReviewCard({ r }: { r: Review }) {
+  return (
+    <div className="flex flex-col gap-4 rounded-control border border-border-standard p-4">
+      <div className="flex items-start gap-2">
+        <img
+          src={asset(r.logo)}
+          alt=""
+          className="h-8 w-8 flex-shrink-0 rounded-control object-cover"
+        />
+        <div className="flex flex-1 flex-col gap-1">
+          <div className="flex items-center gap-1 text-content-strong">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star
+                key={i}
+                className={`h-4 w-4 ${i < r.rating ? "fill-current" : "text-border-secondary"}`}
+              />
+            ))}
+          </div>
+          <p className="text-body-lg text-content-strong">&ldquo;{r.quote}&rdquo;</p>
+          <p className="text-body-md text-content-weak">{r.location}</p>
+        </div>
+        <span className="text-body-sm tabular-nums text-content-strong">{r.time}</span>
+      </div>
+      <div className="rounded-control bg-neutral-bg p-3">
+        <div className="flex items-center justify-between gap-2">
+          <span className="flex items-center gap-2 text-body-lg font-semibold text-neutral">
+            <img src={asset("/icon-replied-otter.png")} alt="" className="h-5 w-5" />
+            Replied by Otter
+          </span>
+          <span className="text-body-sm tabular-nums text-content-strong">{r.replyTime}</span>
+        </div>
+        <p className="mt-2 text-body-md text-content-weak">{r.reply}</p>
+      </div>
+    </div>
+  );
+}
+
 function ReputationManagement() {
   const { owner } = useLayout();
+  const [idx, setIdx] = useState(0);
+
+  // Auto-advance every 5s; resets whenever the user picks a dot manually.
+  useEffect(() => {
+    const t = setInterval(() => setIdx((i) => (i + 1) % REVIEWS.length), 5000);
+    return () => clearInterval(t);
+  }, [idx]);
+
   if (owner === "location") return <ReviewsPendingReplies />;
   return (
     <DashCard>
@@ -795,52 +922,17 @@ function ReputationManagement() {
         <StatTile label="Review replied" value="63.2%" />
       </div>
 
-      <div className="flex flex-col gap-4 rounded-control border border-border-standard p-4">
-        <div className="flex items-start gap-2">
-          <img
-            src={asset("/logo-doordash.png")}
-            alt=""
-            className="h-8 w-8 flex-shrink-0 rounded-control object-cover"
-          />
-          <div className="flex flex-1 flex-col gap-1">
-            <div className="flex items-center gap-1 text-content-strong">
-              {[0, 1].map((i) => (
-                <Star key={i} className="h-4 w-4 fill-current" />
-              ))}
-              {[0, 1, 2].map((i) => (
-                <Star key={`e${i}`} className="h-4 w-4 text-border-secondary" />
-              ))}
-            </div>
-            <p className="text-body-lg text-content-strong">
-              &ldquo;The order was late and the food was cold&rdquo;
-            </p>
-            <p className="text-body-md text-content-weak">Chino Hills · [Franchisee]</p>
-          </div>
-          <span className="text-body-sm tabular-nums text-content-strong">10:00 AM</span>
-        </div>
-        <div className="rounded-control bg-neutral-bg p-3">
-          <div className="flex items-center justify-between gap-2">
-            <span className="flex items-center gap-2 text-body-lg font-semibold text-neutral">
-              <img src={asset("/icon-replied-otter.png")} alt="" className="h-5 w-5" />
-              Replied by Otter
-            </span>
-            <span className="text-body-sm tabular-nums text-content-strong">9:58 AM</span>
-          </div>
-          <p className="mt-2 text-body-md text-content-weak">
-            Hi Joe, we&apos;re really sorry your order arrived cold and later than
-            expected. That&apos;s not the experience we want to have. We&apos;ll
-            follow…
-          </p>
-        </div>
-      </div>
+      <ReviewCard r={REVIEWS[idx]} />
 
-      {/* pager dots */}
+      {/* pager dots — click to jump */}
       <div className="flex items-center justify-center gap-1.5">
-        {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-          <span
+        {REVIEWS.map((_, i) => (
+          <button
             key={i}
-            className={`h-1.5 rounded-full ${
-              i === 0 ? "w-4 bg-content-strong" : "w-1.5 bg-border-secondary"
+            onClick={() => setIdx(i)}
+            aria-label={`Show review ${i + 1}`}
+            className={`h-1.5 rounded-full transition-all ${
+              i === idx ? "w-4 bg-content-strong" : "w-1.5 bg-border-secondary"
             }`}
           />
         ))}
