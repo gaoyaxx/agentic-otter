@@ -890,13 +890,27 @@ function ReviewCard({ r }: { r: Review }) {
 
 function ReputationManagement() {
   const { owner } = useLayout();
-  const [idx, setIdx] = useState(0);
+  const [idx, setIdx] = useState(0); // target review
+  const [shown, setShown] = useState(0); // currently rendered review
+  const [phase, setPhase] = useState<"in" | "out">("in");
 
-  // Auto-advance every 5s; resets whenever the user picks a dot manually.
+  // Auto-advance every 10s; resets whenever the user picks a dot manually.
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % REVIEWS.length), 7000);
+    const t = setInterval(() => setIdx((i) => (i + 1) % REVIEWS.length), 10000);
     return () => clearInterval(t);
   }, [idx]);
+
+  // When the target changes, slide the current card out to the left first.
+  useEffect(() => {
+    if (idx !== shown) setPhase("out");
+  }, [idx, shown]);
+
+  const onAnimEnd = () => {
+    if (phase === "out") {
+      setShown(idx);
+      setPhase("in");
+    }
+  };
 
   if (owner === "location") return <ReviewsPendingReplies />;
   return (
@@ -923,8 +937,12 @@ function ReputationManagement() {
       </div>
 
       <div className="overflow-hidden">
-        <div key={idx} className="review-slide-in">
-          <ReviewCard r={REVIEWS[idx]} />
+        <div
+          key={`${shown}-${phase}`}
+          className={phase === "out" ? "review-slide-out" : "review-slide-in"}
+          onAnimationEnd={onAnimEnd}
+        >
+          <ReviewCard r={REVIEWS[shown]} />
         </div>
       </div>
 
