@@ -6,7 +6,7 @@ import {
   ChevronDown,
   ArrowRight,
   Star,
-  AlertTriangle,
+  Triangle,
 } from "lucide-react";
 import { useLayout } from "@/lib/layout-context";
 import { asset } from "@/lib/asset";
@@ -23,7 +23,7 @@ function Delta({
   if (tone === "negative") {
     return (
       <span className="inline-flex items-center gap-1 rounded-thumb-xs bg-negative-bg px-1.5 py-0.5 text-body-sm font-medium text-negative">
-        <AlertTriangle className="h-3 w-3" />
+        <Triangle className="h-2.5 w-2.5 fill-current" />
         {value}
       </span>
     );

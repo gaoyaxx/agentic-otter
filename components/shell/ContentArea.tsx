@@ -148,7 +148,7 @@ export default function ContentArea() {
   return (
     <main className="min-w-0 flex-1 overflow-hidden bg-canvas p-4">
       <div className="h-full w-full">
-        {activePage === "home" ? (
+        {activePage === "home" && bundle === "enterprise" ? (
           <HomePage />
         ) : activePage === "brand-menus" ? (
           <BrandMenusPage />
