@@ -894,7 +894,7 @@ function ReputationManagement() {
 
   // Auto-advance every 5s; resets whenever the user picks a dot manually.
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % REVIEWS.length), 5000);
+    const t = setInterval(() => setIdx((i) => (i + 1) % REVIEWS.length), 7000);
     return () => clearInterval(t);
   }, [idx]);
 
@@ -922,7 +922,11 @@ function ReputationManagement() {
         <StatTile label="Review replied" value="63.2%" />
       </div>
 
-      <ReviewCard r={REVIEWS[idx]} />
+      <div className="overflow-hidden">
+        <div key={idx} className="review-slide-in">
+          <ReviewCard r={REVIEWS[idx]} />
+        </div>
+      </div>
 
       {/* pager dots — click to jump */}
       <div className="flex items-center justify-center gap-1.5">
