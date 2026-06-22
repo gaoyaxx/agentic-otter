@@ -62,7 +62,7 @@ export const BRANDS: Brand[] = [
  */
 export const NAV_ITEMS: NavItem[] = [
   { id: "home", label: "Home", icon: Home, standalone: true },
-  { id: "otter-shops", label: "Otter Shops", icon: Store, standalone: true },
+  { id: "alerts", label: "Alerts", icon: Bell, standalone: true },
   {
     id: "reports",
     label: "Reports",
@@ -154,12 +154,19 @@ export const NAV_ITEMS: NavItem[] = [
       { id: "timecards", label: "Timecards" },
     ],
   },
+  { id: "otter-shops", label: "Otter shop", icon: Store, standalone: true, dividerBefore: true },
   {
     id: "settings",
     label: "Settings",
     icon: Settings,
-    standalone: true,
-    dividerBefore: true,
+    children: [
+      { id: "account", label: "Account" },
+      { id: "notifications", label: "Notifications" },
+      { id: "payouts-settings", label: "Payouts settings" },
+      { id: "payment-methods", label: "Payment methods" },
+      { id: "tax-center", label: "Tax center" },
+      { id: "billing", label: "Billing" },
+    ],
   },
 ];
 
