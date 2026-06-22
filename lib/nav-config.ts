@@ -11,6 +11,7 @@ import {
   Users,
   Settings,
   Bell,
+  Boxes,
   Activity,
   RotateCcw,
   Megaphone,
@@ -38,6 +39,8 @@ export interface NavItem {
   personas?: Persona[];
   /** Render a section divider line above this item. */
   dividerBefore?: boolean;
+  /** Small badge label shown after the item (e.g. "New"). */
+  badge?: string;
 }
 
 /** Brands owned by the signed-in brand owner (top-of-nav selector). */
@@ -98,6 +101,7 @@ export const NAV_ITEMS: NavItem[] = [
       { id: "archived-menus", label: "Archived menus" },
     ],
   },
+  { id: "inventory", label: "Inventory", icon: Boxes, standalone: true, badge: "New" },
   {
     id: "customers",
     label: "Customers",
