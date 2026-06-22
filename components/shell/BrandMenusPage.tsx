@@ -16,8 +16,8 @@ import { useLayout } from "@/lib/layout-context";
 import Button from "@/components/ui/Button";
 import { PageContainer, PageHeader } from "@/components/ui/page-template";
 import { MENU_ITEMS, MENUS, MENU_TABS, type Availability } from "@/lib/menu-data";
+import { BRANDS } from "@/lib/nav-config";
 import { asset } from "@/lib/asset";
-import { withBrands } from "@/lib/filters";
 
 /* ------------------------------- pieces -------------------------------- */
 
@@ -250,12 +250,10 @@ export default function BrandMenusPage() {
     openPanel,
     closePanel,
     rightPanel,
-    owner,
     menuTab: tab,
     setMenuTab: setTab,
   } = useLayout();
   const insightsOpen = rightPanel === "insights";
-  const isLoc = owner === "location";
 
   return (
     <PageContainer
@@ -264,16 +262,31 @@ export default function BrandMenusPage() {
           breadcrumb={[{ label: "Menus" }, { label: "Brand menus" }]}
           title="Brand menus"
           actions={
-            <Button
-              variant="tertiary"
-              size="sm"
-              iconTrailing={insightsOpen ? PanelRightOpen : PanelRightClose}
-              onClick={() =>
-                insightsOpen ? closePanel() : openPanel("insights")
-              }
-            >
-              Otter AI insights
-            </Button>
+            <>
+              <button className="focus-ring flex h-8 items-center gap-1.5 rounded-control border border-border-secondary bg-surface pl-1.5 pr-2.5 text-body-md text-content-secondary transition-colors hover:bg-secondary-alpha-hover">
+                {BRANDS[0].logo ? (
+                  <img
+                    src={asset(BRANDS[0].logo)}
+                    alt=""
+                    className="h-5 w-5 rounded-thumb-xs object-cover"
+                  />
+                ) : (
+                  <span className="text-base">{BRANDS[0].emoji}</span>
+                )}
+                {BRANDS[0].name}
+                <ChevronDown className="h-3.5 w-3.5 text-content-weak" />
+              </button>
+              <Button
+                variant="tertiary"
+                size="sm"
+                iconTrailing={insightsOpen ? PanelRightOpen : PanelRightClose}
+                onClick={() =>
+                  insightsOpen ? closePanel() : openPanel("insights")
+                }
+              >
+                Otter AI insights
+              </Button>
+            </>
           }
         />
       }
@@ -302,10 +315,7 @@ export default function BrandMenusPage() {
         <div className="flex flex-col gap-4">
           {/* Filters */}
           <div className="flex flex-wrap items-center gap-2">
-            {withBrands(
-              ["Locations", "Station profiles", "Channels"],
-              isLoc,
-            ).map((f) => (
+            {["Locations", "Station profiles", "Channels"].map((f) => (
               <FilterPill key={f} label={f} />
             ))}
             <FilterPill label="+2 more" />
@@ -322,7 +332,7 @@ export default function BrandMenusPage() {
       ) : tab === "Menus" ? (
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
-            {withBrands(["Locations", "Channels"], isLoc).map((f) => (
+            {["Locations", "Channels"].map((f) => (
               <FilterPill key={f} label={f} />
             ))}
             <FilterPill label="+2 more" />

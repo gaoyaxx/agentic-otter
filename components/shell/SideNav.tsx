@@ -48,7 +48,7 @@ function NavContent({ expanded }: { expanded: boolean }) {
           <Icon className="h-5 w-5 flex-shrink-0" strokeWidth={1.75} />
           {expanded && <span className="truncate">{item.label}</span>}
           {expanded && item.badge && (
-            <span className="ml-auto flex-shrink-0 rounded-[4px] bg-primary px-1.5 py-0.5 text-body-sm font-medium leading-none text-white">
+            <span className="ml-1 flex-shrink-0 rounded-[4px] bg-primary px-1.5 py-0.5 text-body-sm font-medium leading-none text-white">
               {item.badge}
             </span>
           )}
