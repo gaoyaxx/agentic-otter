@@ -66,6 +66,7 @@ function PrototypeBar({ onClose }: { onClose: () => void }) {
   return (
     <div className="relative flex h-10 flex-shrink-0 items-center justify-center gap-4 bg-black text-white">
       <Segment options={OWNERS} value={owner} onChange={setOwner} />
+      <span className="h-5 w-px bg-white/20" />
       <Segment options={BUNDLES} value={bundle} onChange={setBundle} />
       <button
         onClick={onClose}
