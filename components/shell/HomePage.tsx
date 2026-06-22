@@ -6,13 +6,28 @@ import {
   ChevronDown,
   ArrowRight,
   Star,
+  AlertTriangle,
 } from "lucide-react";
 import { useLayout } from "@/lib/layout-context";
 import { asset } from "@/lib/asset";
 
 /* =============================== primitives ============================== */
 
-function Delta({ value = "+1.6%" }: { value?: string }) {
+function Delta({
+  value = "+1.6%",
+  tone = "positive",
+}: {
+  value?: string;
+  tone?: "positive" | "negative";
+}) {
+  if (tone === "negative") {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-thumb-xs bg-negative-bg px-1.5 py-0.5 text-body-sm font-medium text-negative">
+        <AlertTriangle className="h-3 w-3" />
+        {value}
+      </span>
+    );
+  }
   return (
     <span className="inline-flex items-center rounded-thumb-xs bg-positive-bg px-1.5 py-0.5 text-body-sm font-medium text-positive">
       {value}
@@ -449,9 +464,21 @@ const RR_FRANCHISEES = [
   { name: "Other", pct: 40, amt: "$608", color: "#9ca3af" },
 ];
 
+const RR_LOCATIONS = [
+  { name: "Chino Hills", pct: 58, amt: "$882", color: "#1c69e8" },
+  { name: "Riverside", pct: 42, amt: "$639", color: "#57b6e9" },
+];
+
 function RevenueRecaptured() {
+  const { owner } = useLayout();
+  const secondLabel = owner === "location" ? "Locations" : "Franchisees";
   const [seg, setSeg] = useState("Channels");
-  const RR = seg === "Franchisees" ? RR_FRANCHISEES : RR_CHANNELS;
+  const RR =
+    seg === "Channels"
+      ? RR_CHANNELS
+      : owner === "location"
+        ? RR_LOCATIONS
+        : RR_FRANCHISEES;
   return (
     <DashCard>
       <div className="flex items-start justify-between gap-3">
@@ -461,7 +488,7 @@ function RevenueRecaptured() {
             Revenue recaptured
           </span>
         </div>
-        <SegToggle options={["Channels", "Franchisees"]} value={seg} onChange={setSeg} />
+        <SegToggle options={["Channels", secondLabel]} value={seg} onChange={setSeg} />
       </div>
 
       <div className="flex flex-col gap-1">
@@ -559,6 +586,9 @@ function ActivityItem({
 }
 
 function AlwaysOnUnpaused() {
+  const { owner } = useLayout();
+  const sub1 = owner === "location" ? "Chino Hills · [Burger King]" : "Chino Hills · [Franchisee]";
+  const sub2 = owner === "location" ? "Chino Hills · [Popeyes]" : "Chino Hills · [Franchisee]";
   return (
     <DashCard>
       <div className="flex items-center gap-2">
@@ -585,14 +615,14 @@ function AlwaysOnUnpaused() {
         <ActivityItem
           logo="/logo-doordash.png"
           title="Doordash paused by staff"
-          sub="Chino Hills · [Franchisee]"
+          sub={sub1}
           time="10:00 AM"
           recoveredTime="10:01 AM"
         />
         <ActivityItem
           logo="/logo-ubereats.png"
           title="Ubereats paused by Ubereats"
-          sub="Chino Hills · [Franchisee]"
+          sub={sub2}
           time="9:58 AM"
           recoveredTime="9:58 AM"
         />
@@ -691,7 +721,57 @@ function IncrementalPayout() {
 
 /* ====================== reputation management card ===================== */
 
+function ReviewsPendingReplies() {
+  return (
+    <DashCard>
+      <div className="flex items-center gap-2">
+        <img src={asset("/card-reputation.png")} alt="" className="h-5 w-5" />
+        <span className="text-body-md font-semibold text-content-strong">
+          Reviews pending replies
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <span className="font-display text-display-sm text-content-strong">245 reviews</span>
+        <div className="flex items-center gap-2">
+          <Delta value="1.6%" tone="negative" />
+          <span className="text-body-sm text-content-weak">vs prior 30 days</span>
+        </div>
+      </div>
+
+      <div className="flex gap-3">
+        <StatTile label="Average rating" value="4.32" />
+        <StatTile label="Reviews" value="3452" />
+        <StatTile label="Pending replies" value="63.2%" />
+      </div>
+
+      <div className="flex flex-col gap-4 rounded-control bg-canvas p-4">
+        <img src={asset("/card-reputation.png")} alt="" className="h-8 w-8" />
+        <div className="flex flex-col gap-1">
+          <p className="text-body-lg font-semibold text-content-strong">
+            Auto-reply to reviews with Otter
+          </p>
+          <p className="text-body-md text-content-weak">
+            Let Otter automatically respond to pending reviews, so you can save
+            time, stay responsive, and protect your online reputation.
+          </p>
+        </div>
+        <button className="flex h-8 w-fit items-center gap-1.5 self-end rounded-control bg-secondary px-3 text-body-md font-medium text-white hover:bg-secondary-hover">
+          Get started
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="pt-1">
+        <LearnMore to="reputation-management" />
+      </div>
+    </DashCard>
+  );
+}
+
 function ReputationManagement() {
+  const { owner } = useLayout();
+  if (owner === "location") return <ReviewsPendingReplies />;
   return (
     <DashCard>
       <div className="flex items-center gap-2">
@@ -792,7 +872,14 @@ export default function HomePage() {
           </h1>
           <div className="flex items-center gap-2">
             <DropdownPill label="Last 30 days" />
-            <DropdownPill label="Franchisees" />
+            {owner === "location" ? (
+              <>
+                <DropdownPill label="Locations" />
+                <DropdownPill label="Brands" />
+              </>
+            ) : (
+              <DropdownPill label="Franchisees" />
+            )}
             <DropdownPill label="Channels" />
           </div>
         </div>
