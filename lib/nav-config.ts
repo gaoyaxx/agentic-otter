@@ -10,6 +10,7 @@ import {
   Radio,
   Users,
   Settings,
+  Bell,
   Activity,
   RotateCcw,
   Megaphone,
@@ -202,9 +203,27 @@ function enterpriseNav(owner: Owner, withOrdersMenus: boolean): NavItem[] {
   ];
   group4[0] = { ...group4[0], dividerBefore: true };
 
+  // Bottom section: Otter shop + Settings.
+  const bottom: NavItem[] = [
+    { id: "otter-shops", label: "Otter shop", icon: Store, standalone: true, dividerBefore: true },
+    {
+      id: "settings",
+      label: "Settings",
+      icon: Settings,
+      children: [
+        { id: "account", label: "Account" },
+        { id: "notifications", label: "Notifications" },
+        { id: "payouts-settings", label: "Payouts settings" },
+        { id: "payment-methods", label: "Payment methods" },
+        { id: "tax-center", label: "Tax center" },
+        { id: "billing", label: "Billing" },
+      ],
+    },
+  ];
+
   return [
     { id: "home", label: "Home", icon: Home, standalone: true },
-    { id: "otter-shops", label: "Otter Shop", icon: Store, standalone: true },
+    { id: "alerts", label: "Alerts", icon: Bell, standalone: true },
     { id: "live-sales", label: "Live Sales", icon: Activity, standalone: true, dividerBefore: true },
     { id: "sales", label: "Sales", icon: BarChart3, standalone: true },
     { id: "revenue-recapture", label: "Revenue Recapture", icon: RotateCcw, standalone: true, dividerBefore: true },
@@ -215,6 +234,7 @@ function enterpriseNav(owner: Owner, withOrdersMenus: boolean): NavItem[] {
     { id: "verify", label: "Verify", icon: BadgeCheck, standalone: true },
     ...ordersMenus,
     ...group4,
+    ...bottom,
   ];
 }
 
