@@ -442,11 +442,11 @@ const RR_CHANNELS = [
 ];
 
 const RR_FRANCHISEES = [
-  { name: "Chino Hills", pct: 38, amt: "$578", color: "#1c69e8" },
-  { name: "Riverside", pct: 27, amt: "$411", color: "#57b6e9" },
-  { name: "Pasadena", pct: 19, amt: "$289", color: "#8c42e0" },
-  { name: "Anaheim", pct: 11, amt: "$167", color: "#f98a53" },
-  { name: "Other", pct: 5, amt: "$76", color: "#9ca3af" },
+  { name: "Amy Harris", pct: 24, amt: "$365", color: "#1c69e8" },
+  { name: "David Chen", pct: 18, amt: "$274", color: "#57b6e9" },
+  { name: "Maria Lopez", pct: 12, amt: "$183", color: "#8c42e0" },
+  { name: "James Park", pct: 6, amt: "$91", color: "#f98a53" },
+  { name: "Other", pct: 40, amt: "$608", color: "#9ca3af" },
 ];
 
 function RevenueRecaptured() {

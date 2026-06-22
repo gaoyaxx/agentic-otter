@@ -231,23 +231,18 @@ export default function RightPanel() {
 
   if (shown === "none") return null;
 
-  const isOtter = shown === "otter";
-  // Exit pose: insights slides out to the right; Otter shrinks toward the
-  // top-right (the Otter AI button in the global nav).
+  // Exit pose: both panels slide out to the right.
   const pose = active
-    ? "translate-x-0 translate-y-0 scale-100 opacity-100"
-    : isOtter
-      ? "translate-x-[35%] -translate-y-[42%] scale-[0.2] opacity-0"
-      : "translate-x-[105%] opacity-100";
+    ? "translate-x-0 opacity-100"
+    : "translate-x-[105%] opacity-100";
 
   return (
     <aside
-      className="flex-shrink-0 bg-canvas py-4 pl-0 pr-4"
+      className="flex-shrink-0 overflow-hidden bg-canvas py-4 pl-0 pr-4"
       style={{ width: panelWidth }}
     >
       <div
-        className={`h-full will-change-transform transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${pose}`}
-        style={{ transformOrigin: "top right" }}
+        className={`h-full will-change-transform transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${pose}`}
       >
         {shown === "insights" && <InsightsPanel />}
         {shown === "setup" && <SetupPanel />}
