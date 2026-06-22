@@ -587,8 +587,8 @@ function ActivityItem({
 
 function AlwaysOnUnpaused() {
   const { owner } = useLayout();
-  const sub1 = owner === "location" ? "Chino Hills · [Burger King]" : "Chino Hills · [Franchisee]";
-  const sub2 = owner === "location" ? "Chino Hills · [Popeyes]" : "Chino Hills · [Franchisee]";
+  const sub1 = owner === "location" ? "Chino Hills · Burger King" : "Chino Hills · [Franchisee]";
+  const sub2 = owner === "location" ? "Chino Hills · Popeyes" : "Chino Hills · [Franchisee]";
   return (
     <DashCard>
       <div className="flex items-center gap-2">
