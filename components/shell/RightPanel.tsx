@@ -238,7 +238,7 @@ export default function RightPanel() {
 
   return (
     <aside
-      className="flex-shrink-0 overflow-hidden bg-canvas py-4 pl-0 pr-4"
+      className="flex-shrink-0 bg-canvas py-4 pl-1 pr-4"
       style={{ width: panelWidth }}
     >
       <div
