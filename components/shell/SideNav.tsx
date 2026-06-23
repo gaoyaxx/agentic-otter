@@ -47,7 +47,7 @@ function NavContent({ expanded }: { expanded: boolean }) {
         >
           <Icon className="h-5 w-5 flex-shrink-0" strokeWidth={1.75} />
           {expanded && (
-            <span className="flex min-w-0 items-center gap-1">
+            <span className="flex min-w-0 items-center gap-2">
               <span className="truncate">{item.label}</span>
               {item.badge && (
                 <span className="flex-shrink-0 rounded-[4px] bg-primary px-1.5 py-0.5 text-body-sm font-medium leading-none text-white">
