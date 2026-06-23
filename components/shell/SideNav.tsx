@@ -46,10 +46,14 @@ function NavContent({ expanded }: { expanded: boolean }) {
           } ${expanded ? "" : "justify-center px-0"}`}
         >
           <Icon className="h-5 w-5 flex-shrink-0" strokeWidth={1.75} />
-          {expanded && <span className="truncate">{item.label}</span>}
-          {expanded && item.badge && (
-            <span className="ml-1 flex-shrink-0 rounded-[4px] bg-primary px-1.5 py-0.5 text-body-sm font-medium leading-none text-white">
-              {item.badge}
+          {expanded && (
+            <span className="flex min-w-0 items-center gap-1">
+              <span className="truncate">{item.label}</span>
+              {item.badge && (
+                <span className="flex-shrink-0 rounded-[4px] bg-primary px-1.5 py-0.5 text-body-sm font-medium leading-none text-white">
+                  {item.badge}
+                </span>
+              )}
             </span>
           )}
         </button>
