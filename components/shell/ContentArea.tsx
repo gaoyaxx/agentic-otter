@@ -16,13 +16,18 @@ import { pageHasInsights } from "@/lib/insights-data";
 import { withBrands } from "@/lib/filters";
 import Button from "@/components/ui/Button";
 
-/** Report-type tabs per Reports page. Pages not listed show no tabs. */
-const REPORT_TABS_BY_PAGE: Record<string, string[]> = {
-  sales: ["Overview", "Sales summary", "Menu performance", "Marketing", "Labor"],
-  "loss-management": ["Operational excellence", "Availability", "Always on"],
-  accounting: ["Payouts", "Direct orders", "Taxes", "Revenue recapture"],
-  "report-customers": ["Customers", "Reviews and ratings"],
-};
+/** Report-type tabs per Reports page (bundle-dependent). Empty = no tabs. */
+function reportTabsFor(pageId: string, bundle: string): string[] {
+  if (pageId === "sales") {
+    return bundle === "pos"
+      ? ["Overview", "Sales summary", "Product Mix", "Marketing", "Labor"]
+      : ["Sales summary", "Product Mix"];
+  }
+  if (pageId === "revenue-protection") return ["Cancelation", "Order issues"];
+  if (pageId === "accounting") return ["Payouts", "Direct orders", "Taxes", "Revenue recapture"];
+  if (pageId === "report-customers") return ["Customers", "Reviews and ratings"];
+  return [];
+}
 import {
   PageContainer,
   PageHeader,
@@ -141,7 +146,7 @@ export default function ContentArea() {
       ? [{ label: parent }, { label: title }]
       : [{ label: title }];
   const pageTitle = isHome ? "Good morning, Olivia." : title;
-  const tabs = REPORT_TABS_BY_PAGE[activePage] ?? [];
+  const tabs = reportTabsFor(activePage, bundle);
   const [reportTab, setReportTab] = useState("");
   const activeTab = tabs.includes(reportTab) ? reportTab : (tabs[0] ?? "");
 
