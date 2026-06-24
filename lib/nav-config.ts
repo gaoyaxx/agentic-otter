@@ -250,7 +250,7 @@ function enterpriseNav(owner: Owner, withOrdersMenus: boolean): NavItem[] {
     { id: "reports", label: "Reports", icon: BarChart3, dividerBefore: true, children: reportsChildren },
     { id: "revenue-recapture", label: "Revenue Recapture", icon: RotateCcw, standalone: true, dividerBefore: true },
     { id: "marketing-automation", label: "Marketing automation", icon: Megaphone, standalone: true },
-    { id: "financial-reconciliation", label: "Financial Reconciliation", icon: Scale, standalone: true },
+    { id: "financial-reconciliation", label: "Reconciliation", icon: Scale, standalone: true },
     { id: "reputation-management", label: "Reputation management", icon: Star, standalone: true },
     { id: "availability", label: "Availability", icon: BellRing, standalone: true },
     { id: "verify", label: "Verify", icon: BadgeCheck, standalone: true },
