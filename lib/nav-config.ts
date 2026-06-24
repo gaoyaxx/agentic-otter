@@ -73,7 +73,7 @@ export const NAV_ITEMS: NavItem[] = [
     children: [
       { id: "live-sales", label: "Live sales" },
       { id: "sales", label: "Sales" },
-      { id: "revenue-protection", label: "Revenue protection" },
+      { id: "revenue-protection", label: "Operational excellence" },
       { id: "accounting", label: "Financial" },
       { id: "report-customers", label: "Customers" },
     ],
@@ -218,12 +218,12 @@ function enterpriseNav(owner: Owner, withOrdersMenus: boolean): NavItem[] {
     ? [
         { id: "live-sales", label: "Live sales" },
         { id: "sales", label: "Sales" },
-        { id: "revenue-protection", label: "Revenue protection" },
+        { id: "revenue-protection", label: "Operational excellence" },
         { id: "payouts", label: "Payouts" },
       ]
     : [
         { id: "sales", label: "Sales" },
-        { id: "revenue-protection", label: "Revenue protection" },
+        { id: "revenue-protection", label: "Operational excellence" },
         { id: "payouts", label: "Payouts" },
       ];
 
