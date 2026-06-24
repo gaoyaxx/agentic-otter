@@ -12,7 +12,6 @@ import {
   Settings,
   Bell,
   Boxes,
-  Activity,
   RotateCcw,
   Megaphone,
   Scale,
@@ -74,8 +73,8 @@ export const NAV_ITEMS: NavItem[] = [
     children: [
       { id: "live-sales", label: "Live sales" },
       { id: "sales", label: "Sales" },
-      { id: "loss-management", label: "Loss management" },
-      { id: "accounting", label: "Financials" },
+      { id: "revenue-protection", label: "Revenue protection" },
+      { id: "accounting", label: "Financial" },
       { id: "report-customers", label: "Customers" },
     ],
   },
@@ -214,9 +213,23 @@ function enterpriseNav(owner: Owner, withOrdersMenus: boolean): NavItem[] {
   ];
   group4[0] = { ...group4[0], dividerBefore: true };
 
-  // Bottom section: Otter shop + Settings.
+  // Reports group — children differ between Enterprise and Middleware.
+  const reportsChildren: NavChild[] = withOrdersMenus
+    ? [
+        { id: "live-sales", label: "Live sales" },
+        { id: "sales", label: "Sales" },
+        { id: "revenue-protection", label: "Revenue protection" },
+        { id: "payouts", label: "Payouts" },
+      ]
+    : [
+        { id: "sales", label: "Sales" },
+        { id: "revenue-protection", label: "Revenue protection" },
+        { id: "payouts", label: "Payouts" },
+      ];
+
+  // Bottom section: Alerts + Settings.
   const bottom: NavItem[] = [
-    { id: "otter-shops", label: "Otter shop", icon: Store, standalone: true, dividerBefore: true },
+    { id: "alerts", label: "Alerts", icon: Bell, standalone: true, dividerBefore: true },
     {
       id: "settings",
       label: "Settings",
@@ -234,9 +247,7 @@ function enterpriseNav(owner: Owner, withOrdersMenus: boolean): NavItem[] {
 
   return [
     { id: "home", label: "Home", icon: Home, standalone: true },
-    { id: "alerts", label: "Alerts", icon: Bell, standalone: true },
-    { id: "live-sales", label: "Live Sales", icon: Activity, standalone: true, dividerBefore: true },
-    { id: "sales", label: "Sales", icon: BarChart3, standalone: true },
+    { id: "reports", label: "Reports", icon: BarChart3, dividerBefore: true, children: reportsChildren },
     { id: "revenue-recapture", label: "Revenue Recapture", icon: RotateCcw, standalone: true, dividerBefore: true },
     { id: "marketing-automation", label: "Marketing automation", icon: Megaphone, standalone: true },
     { id: "financial-reconciliation", label: "Financial Reconciliation", icon: Scale, standalone: true },
