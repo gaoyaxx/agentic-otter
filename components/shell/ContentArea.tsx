@@ -23,7 +23,11 @@ function reportTabsFor(pageId: string, bundle: string): string[] {
       ? ["Overview", "Sales summary", "Product Mix", "Marketing", "Labor"]
       : ["Sales summary", "Product Mix"];
   }
-  if (pageId === "revenue-protection") return ["Cancelation", "Order issues"];
+  if (pageId === "revenue-protection") {
+    return bundle === "pos"
+      ? ["Cancelation", "Order issues", "Cash management", "Void transaction"]
+      : ["Cancelation", "Order issues"];
+  }
   if (pageId === "accounting") return ["Payouts", "Direct orders", "Taxes", "Revenue recapture"];
   if (pageId === "report-customers") return ["Customers", "Reviews and ratings"];
   return [];
