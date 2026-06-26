@@ -108,7 +108,7 @@ export const NAV_ITEMS: NavItem[] = [
     children: [
       { id: "financials", label: "Financials" },
       { id: "campaigns", label: "Campaigns" },
-      { id: "customers-list", label: "Customers" },
+      { id: "customers-list", label: "Guest directory" },
       { id: "loyalty", label: "Loyalty" },
       { id: "discount", label: "Discount" },
     ],
